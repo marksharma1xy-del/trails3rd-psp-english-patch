@@ -1,0 +1,16 @@
+[Estelle] Slots not bound by element,/          adaptable to any battle.         
+[Joshua] High speed and mobility./         Many Crafts, skilled in Arts.             
+[Scherazard] Well-balanced; freely switches/             between whip and Arts.            
+[Olivier] Orbal gun ignores lines;/          strong Arts are his forte.      
+[Kloe] Healing Arts expert./       Also has useful support Crafts.             
+[Agate] Powerful attacker; front-line/        type with varied Crafts.         
+[Tita] Wide-area orbal cannon attacks/       and healing, but low HP.                  
+[Jin] Strong on offense and defense;/      brawler. Weak at Arts.      
+[Kevin] Supports with sacred arts,/        pierces foes with his bowgun.     
+[Anelace] Sharp, graceful swordplay;/          speed rush when cornered.     
+[Josette] Unique, handy Crafts./          Better in back than front.           
+[Richard] Blinding sword speed./          Excellent Arts attacks too.            
+[Mueller] High HP and speed./          Warrior type, great in melee.             
+[Julia] Boosts morale, fights with sword./        All-around type with Arts.     
+[Ries] Slays foes with a flexible blade,/       supports with healing arts.  
+[Renne] Non-elemental, ignores lines./        Overwhelming Arts but low HP.  

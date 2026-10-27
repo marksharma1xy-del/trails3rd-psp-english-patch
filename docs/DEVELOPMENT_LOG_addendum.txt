@@ -1,0 +1,5 @@
+43. BATCH 42: 66 AnonymousTalk strings (non-E1000) translated: queue/anon_en.tsv (JP<TAB>EN, exact literal match, cp932 .py).
+Includes door prompt "Open the door?" (28 uses, M3110 etc), save warnings, M7408/7002_5/7000_1 text, recipe slip.
+Applied to out/hand_py/*.py (cp932!). NOT yet recompiled into ISO (pipeline: rec_all.sh -> lk_build2 -> dumpins -> lk_verify2).
+STILL JP: E1000 book AnonymousTalk (145 calls), 393 untranslated hand ids (queue/unique.tsv, en_004+), enemy names battle/dat (1056 strings),
+bestiary monsnote.dt1/dt2, t_name Yoshua@5157, start.dat t_status/t_se. Textures LAST (PPSSPP pack; wheel v3 WORKS).

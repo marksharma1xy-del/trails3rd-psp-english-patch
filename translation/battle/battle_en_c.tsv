@@ -1,0 +1,241 @@
+549	Line - Attack, Knockback\nKnocks foe far
+560	Single - Full Guard\nEarth shield fully blocks one attack.
+561	Earth Wall
+562	Small - Full Guard\nEarth shield over an area blocks one attack.
+563	Doppel Josette
+564	Grimoire mimicking\nJosette. Stirs things up\nwith gunfire and earth\narts.
+565	Light Oni
+566	Dmg+Faint
+567	Halo
+568	Afterglow Break
+569	Doppel Richard
+570	Grimoire mimicking\nRichard. Cuts foes down\none after another with\nblinding iaido.
+571	True Twin Hit
+572	2 Attacks
+573	True Shadow
+574	AT Delay
+575	True Haze
+576	Kill
+577	True Black Fang
+578	All
+579	Doppel Joshua
+580	Grimoire mimicking\nJoshua. Races across\nthe field and sweeps\naway all foes.
+581	Mid-area - Attack\nMad silver blades fall. 90% to Confuse.
+582	Large - Attack\nSummons otherworld envoy. 20% Faint.
+583	Meteor Fall
+584	Large - Attack\nCalls a meteor from the sky onto foes.
+585	Doppel Renne
+586	Grimoire mimicking\nRenne. Wields strong\narts and reaps lives\nwith a scythe.
+587	Ragna Bind
+588	Attack Craft: Single - Faint\nPulls in far foes
+589	Hound Gale
+590	Attack Craft: Mid\nArea damage
+591	Blade Dancer
+592	Attack Craft: Single\n
+593	Mirage Edge
+594	Support Craft: Single, Cancel Craft/Art\nSeal Art + Cast Cancel
+595	Doppel Mueller
+596	Grimoire mimicking\nMueller. Wields master\nswordplay to sweep the\nfield of foes.
+597	Attack Craft: Single, Cancel Craft/Art\nFlawless 4-hit combo. Cancels crafts and arts.
+598	Mirage Berg
+599	Support Craft: Self - Full Guard\nA phantom shield blocks one attack.
+600	Order
+601	Support Craft: All - STR+20%\nRaises allies' morale.
+602	Trinity Kreis
+603	Attack S-Craft: Mid-area\nSword tips draw a triangle of light that strikes foes.
+604	A-Crest
+605	Mid-area - ADF+30%\nRaises allies' arts defense. ADF+30% a while.
+606	La Crest
+607	Mid-area - DEF+25%\nEarth guards allies. DEF+25% for a while.
+608	Doppel Julia
+609	Grimoire mimicking\nJulia. Dazzles with\nswordplay and even\nsupports allies.
+610	Blade Net
+611	Dmg+Cast Cancel
+612	Dmg+MOV Down
+613	Evil Eye
+614	Poison Bomb
+615	Arachne Graea
+616	Eldest of the three\nArachne sisters who\nspin nightmares. Glares\ncoldly, inflicting ailments.
+617	Big Flash
+618	Space Erosion
+619	Greedy Blue Light
+620	HP Drain
+621	EP Drain
+622	CP Drain
+623	Adept
+624	Magic orb made by\nAstarte. Briefly\nbanishes those who\napproach.
+625	Grudge Flame
+626	Ranged + Confuse
+627	Agnigast
+628	Flame demon who craves\npower. Wields huge force\nand hinders foes.
+629	Poison Bite
+630	Hidden
+631	Arachne's servant.\nCrawls fast and stabs\nprey with poison fangs.
+632	Sudrude Talos
+633	Giant statue with ill\nintent. Sits blocking\nthe path and spews\nblasts at nearby foes.
+634	Holy Drain Cubrie
+635	HP Drain+Big Dmg
+636	Arachne Zigma
+637	Mother of the Arachne\nsisters. Rampages, and\nwhen angry enough,\ndrains life from prey.
+638	Double Buster Cannon
+639	Gigant Press
+640	Gigant Rush
+641	Gigant Claw
+642	Revival Beam
+643	Grimoire mimicking\nKevin. Keeps foes in\ncheck with a crossbow\nand aids allies.
+644	Grimoire mimicking\nRies. Wields a flexible\nGale Sword and even\nrevival arts.
+645	Licht Kreis II
+646	Grimoire mimicking\nAnelace. Slices foes\nwith sharp, graceful\nswordplay.
+647	Dark Matter
+648	Single - Attack\nHigh-pressure space crushes the foe.
+649	Arachne Epros
+650	Second of the Arachne\nsisters who spin\nnightmares. Heals allies\nand shrieks when dying.
+651	Ranged + STR Down
+652	Ranged + DEF Down
+653	Ranged + SPD Down
+654	Arachne Thalia
+655	Youngest of the Arachne\nsisters who spin\nnightmares. Sends evil\nhordes, lowers stats.
+656	Secret: Twin Dragons
+657	Wind Ring
+658	Zero Force
+659	Kirika
+660	Ex-guild receptionist\nand Taito master. Her\naura-wrapped crescent\nring corners foes.
+661	Esmeralda Heart
+662	Normal
+663	Sword: Swallow
+664	Sword: Cicada
+665	Philip
+666	Duke Dunan's attendant.\nWields a rapier with\ngrace. Ex-captain of the\nRoyal Guard.
+667	Black Suit - Blade
+668	Black-suited fighter.\nSmoke bombs and rams\nrestrict foes' moves.
+669	Great Cut
+670	Big Dmg+Faint
+671	Whirlwind
+672	Roar Blade
+673	Missile Dmg+Faint
+674	Beast Dance
+675	Morgan
+676	Veteran of the Royal\nArmy commanding the\nborder division. Swings a\nhuge halberd to rule all.
+677	Impact Rage
+678	Bind Cry
+679	Perfect Snipe
+680	MG Sweep
+681	Black Jaeger
+682	Unknown fighter. Good\nat judging situations,\nuses varied skills\nand Cerace Potions.
+683	Black Knight
+684	Swordsman in a strange\nmask. Wields strong arts\nand fierce swordplay to\nwipe out foes.
+685	*Enh. Jaeger takes aim...
+686	Bone Warrior
+687	Skeleton warrior that\nwanders the underworld\nseeking a body. Hates\nthe living deeply.
+688	Bone Shooter
+689	Skeleton archer that\nwanders the underworld\nseeking a body. Keeps\nits distance and snipes.
+690	Single - Restore 2500 HP\nWater's power restores 2500 HP to one ally.
+691	Clock Down
+692	Mid-area - SPD-50%\nSlows time. SPD-50% for a while.
+693	Stone Hammer
+694	Single - Attack\nDrops a big rock on foes.
+695	Single - Attack\nHurls a heavy mass of water.
+696	Fire Bolt
+697	Single - Attack\nFires a blazing fireball.
+698	Single - Attack\nSlices foes with compressed air.
+699	Arc Bone
+700	Skeleton sorcerer that\nwanders the underworld\nseeking a body. Torments\nthe living with arts.
+701	HP Drain
+702	EP Drain
+703	CP Drain
+704	Fluid
+705	Ranged + Poison
+706	All-One Fluid
+707	Ghoul Owen
+708	Fallen heretic of\nPurgatory. Drains life,\nsplits repeatedly, and\nexplodes when it dies.
+709	Wight Man
+710	Dead soul wandering\nPurgatory. Drains life,\nsplits repeatedly, and\nexplodes when it dies.
+711	STR Drain
+712	DEF Drain
+713	ADF Drain
+714	Banshee
+715	Spirit of a vengeful\nwoman. Curses all it\nsees and drains their\nabilities.
+716	Magic Hammer
+717	Full Smash
+718	Hammer Pack
+719	Malicious dwarf\nmonster. Swings a weird\nmallet and shrinks\npeople for fun.
+720	HP Drain
+721	EP Drain
+722	CP Drain
+723	Evil Breath
+724	All - Attack\nTime - All: A whisper that steals life
+725	Mumma Abalis
+726	Nightmare that haunts\nwomen's dreams. Drains\nvigor, even life at times.
+727	Mumma Desire
+728	Nightmare that haunts\nmen's dreams. Drains\nvigor, even life at times.
+729	Demon Claw
+730	Hyper Heal
+731	All - Attack\nThrusts huge icicles. 20% to Freeze.
+732	Arch Demon
+733	Nightmare feeding on\nhuman goodness. Its\nruinous claw strikes\nterror. A reward if slain?
+734	Iron Knight
+735	Medieval knight armor\ngiven life. Swings a\nlance to skewer\nintruders.
+736	Raging Charge
+737	Iron Kaiser
+738	Medieval heavy armor\ngiven life. No gaps in\noffense or defense,\nexcels at charges.
+739	Haze
+740	Dark Blade
+741	Medieval stealth armor\ngiven life. Moves fast\nand always aims at\nweak points.
+742	Peck
+743	Screen CP Drain
+744	Ce-Le-Force
+745	Bird-headed beastman.\nBlinds, confuses, and\ndrains CP. Terrifying.\nForgetful.
+746	Pounce
+747	Pitfall
+748	Wererat
+749	Rat-featured beastman.\nSwings a poisoned saber\nand traps foes in pits.\nMay call allies.
+750	Salivashoot
+751	Gracie
+752	Half-man half-fish\nmonster aimlessly\nroaming Purgatory.\nSlows foes with water.
+753	Poltergeist
+754	Troublesome evil spirit.\nCan petrify and is hard\nto hit. Sometimes\nsplits.
+755	Blood Shooter
+756	Archer roaming hell.\nKeeps its distance and\nsnipes. Screams when\ndefeated, but...
+757	Abyss Fall
+758	White Gehenna
+759	Mid-area - Attack\nWarps space. 20% to Faint.
+760	Gaia Shield
+761	All - Full Guard\nEarth shield blocks one attack for allies.
+762	Lucifuge
+763	Sorcerer ruling chaos.\nWields wicked arts to\nstrike fear into foes.
+764	Rampage
+765	Heaven Flame
+766	Megiddo Fire
+767	Heaven Tackle
+768	Sleipnir
+769	Two-headed war chariot\nguarding the heavens.\nRaces the sky and burns\nthe earth.
+770	Blade Dance
+771	Death Slash
+772	Shield Pack
+773	Malicious dwarf\nmonster. Carries a bladed\nshield and aims at\nweak points.
+774	Smoke Buzz
+775	Giant Shell
+776	Buzz Pack
+777	Malicious dwarf\nmonster. Fires smoke\nbombs and enjoys\nwatching you cough.
+778	Aka Manah
+779	War demon prowling\nPurgatory. Boasts brutal\npower that drives foes\nto despair.
+780	Color Knight
+781	Crimson armor soldier\ngiven life. Something\nhappens if it's slain?
+782	Demon Lance
+783	Dullahan
+784	Armored soldier of\nPurgatory. Strong armor\nand lance charges\nkill prey.
+785	Rat Fighter
+786	Stronger rat beastman\nwith warrior's pride.\nPounces with poison\nblade. May call allies.
+787	Peaceful
+788	Troublesome evil spirit.\nCan petrify and is hard\nto hit. Sometimes\nsplits.
+789	Heal Fluid
+790	Bone Worm
+791	Evil worm crawling\nPurgatory. Carries\nvarious toxins and\nhealing fluid.
+792	Skull Head
+793	Floating dead soul.\nA will-o'-the-wisp.\nAlways self-destructs\nwhen slain.
+794	Rush
+795	Werewolf
+796	Wolf-headed beastman.\nPlays with prey using\npoison claws and rushes.
+797	Wail
+798	Warbat
+799	Bat-featured beastman.\nUltrasound hinders prey,\nthen feasts on HP\nand EP.

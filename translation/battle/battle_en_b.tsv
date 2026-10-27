@@ -1,0 +1,300 @@
+260	Afterimage
+261	Julia
+262	Captain here.
+263	Flash
+264	Blink
+265	Snipe Order
+266	Spiral
+267	Gran Stream
+268	All - Attack\nA raging air current engulfs and shreds all foes.
+269	Arc Prominence
+270	All - Attack\nCompressed flames explode and scorch all foes on the ground.
+271	Zodiac
+272	All - STR, DEF +25%\nRaises allies' STR and DEF by 25% for a time.
+273	Petrosphere
+274	Small - MOV-4\nEarth's power snares foes' feet. MOV-4 for a time.
+275	Colonel Reed
+276	One of the Royal Army's\nbest. Uses the Sword\nSaint's swordplay and\nstrong arts. Soon a Col.
+277	Charge
+278	Rain Thrust
+279	Blowaway Atk
+280	Squirt Feuer
+281	Squirt Wild
+282	Squirt Zauber
+283	Jaeger
+284	Kurt disguised as a\nJaeger. Attacks from\nmid to long range with\nhis spear.
+285	Attack
+286	Grenade
+287	F.Jaeger
+288	Karna disguised as a\nJaeger. Snipes from afar\nand reacts sharply to\narts.
+289	Secret: Phoenix Wave
+290	Armor Cut
+291	Lightning
+292	100 Hits
+293	Kirin
+294	Wind Ring
+295	Cassius
+296	Royal Army commander\nand master of martial\nart. His staff strokes\nshake the very earth.
+297	Smoke
+298	Gratz disguised as a\nJaeger. Blinds you with\nsmoke, then charges.\nBeware being fainted!
+299	Cocytus
+300	Water: All [Water16 Wind8 Gold4]\nWater - All, 20% Freeze
+301	Formic Acid
+302	Icicle Drop
+303	Freeze
+304	Ghost Epitaph
+305	Slime mold monster\nliving in a frozen\ncorpse. Freezes\neverything nearby.
+306	*Ghost Epitaph acts odd
+307	My bad
+308	OM Setup
+309	Riot Arms
+310	Concentrate Freeze Cannon
+311	Gilbert
+312	Society enhanced soldier\nwho calls himself #1 in\ngrowth. Knows many\nrough techniques.
+313	*Charge complete!
+314	*Taste my rage! Ohhhh!!
+315	*Ugh!
+316	*Gilbert grumbles to himself
+317	*Lost the will to fight...
+318	Warning, intruder found
+319	Gorgon Laser
+320	Vogel 911 Mod
+321	Society patrol doll\nweapon. Its special\nbeam inflicts status\nailments on foes.
+322	Riot Saber
+323	Gilbert Uncompressed(MAX)
+324	Society enhanced soldier\nwho calls himself #1 in\ngrowth. Why is he here...
+325	Chaff Grenade
+326	Spin Doll
+327	Thirteen Workshops'\nOver Marionette.\nLightweight unit for\nmop-up operations.
+328	*Analyzing battle data
+329	Seal
+330	Shadow Cougar
+331	Society-trained stealth\ncombat beast. Stays calm\nand aims at weak spots.
+332	Return
+333	Special Craft: Exit Orbal Gear\nDismount and fight normally.
+334	Attack Craft: Mid-area\nRapid fire riddles foes in range.
+335	Attack Craft: Small area - Blind\nSmoke shells Blind foes in range.
+336	Attack Craft: Single, 20% Faint\nRams and knocks back foe, 20% Faint chance.
+337	Tita Orbal Gear
+338	Smash
+339	Raging Hammer
+340	Twin Smash
+341	Rostrum
+342	Powerful demon who\nguards Purgatory. Slays\nfoes with unmatched\nstrength.
+343	Summon Demon
+344	Demon Roar
+345	Hades Wave
+346	Evil Eye
+347	Geo Catastrophe
+348	All - Attack\nCauses a local quake with magma power from below.
+349	Hell Spear Sunrasua
+350	Single - Attack\nThrusts sharp blades up from the ground.
+351	Thunder Me Belde
+352	Demon Spear Ashtar
+353	Astarte
+354	Powerful demon who\nguards Purgatory. Wields\nlimitless magic to\ndestroy all nearby.
+355	Blue Bow Nag Rub
+356	Evil Sword Zek War
+357	Stigma Cannon Megiddo
+358	Sept Crisis
+359	Change Attribute
+360	*Pillar Retrieval
+361	Rending Sound Cimeda
+362	Sky Rend: Shadow Strike
+363	Time Demon Zwolder
+364	Sky Demon Mavecrow
+365	Anima Mundi
+366	Ultimate will born from\na copy of the Stigma.\nManipulates the laws\nof the world to destroy.
+367	Flame
+368	Unused
+369	Joint Attack
+370	Vanish
+371	Flame Pillar
+372	Fire pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+373	Water Flame
+374	Water Pillar
+375	Water pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+376	Wind Flame
+377	Wind Pillar
+378	Wind pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+379	Earth Flame
+380	Earth Pillar
+381	Earth pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+382	Silver Flame
+383	Phantom Pillar
+384	Phantom pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+385	Time Flame
+386	Chronos Pillar
+387	Time pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+388	Gold Flame
+389	Heaven Pillar
+390	Sky pillar guarding\nAnima Mundi. Triggers\nlinked attacks while\neven one pillar stands.
+391	*Psychic power builds!
+392	*The barrier flickers...
+393	*The barrier vanished!
+394	*Tempest flaunts its luster
+395	*The time has come
+396	*Valgem hums a gloomy song
+397	EP Break
+398	CP Break
+399	Grimoire
+400	Amorphous monster.\nWatches foes and\ndrains CP and EP.
+401	Flamethrower
+402	Sudrude
+403	Statue with ill intent.\nMade of hard material,\nspews fire from mouth.
+404	Light Shower
+405	Aries Pot
+406	Mysterious flying pot.\nKeeps its distance and\nfires lasers that\nlower abilities.
+407	Heaven Charge Order
+408	Support Craft: Mid-area - STR+20%\nShouts to rally allies. STR +20% in range.
+409	Blade Angel
+410	Valkyrie guarding the\nheavens. Rallies allies\nand charges boldly.\nThe eldest of three.
+411	Cosmo Explosion
+412	Pom the Tempest
+413	Pom-like being that\nreached selflessness.\nUses transcendent\ntechniques.
+414	Energy Sphere
+415	Ranged + Faint
+416	Energy Vulcan
+417	Energy Ray
+418	Dive Dimension
+419	Evil Horde
+420	Ranged + Seal Craft
+421	Ranged + Seal Magic
+422	Collapse
+423	Beelzebul
+424	King of unclean souls.\nWhen battle starts,\nhe begins a countdown\nto doom.
+425	Fig Song
+426	Pomegranate
+427	Fern Song
+428	Death Scream
+429	Valgem
+430	Guide of the dead who\nwanders the gap of\ndarkness. Hums a gloomy\nsong that brings death.
+431	HP Drain
+432	Tear
+433	Earth Lance
+434	Bennu
+435	Ferryman of the dead.\nQuietly punishes\nthe sinful.
+436	Nucleus Bennu
+437	True body of Bennu\nhiding in a coffin.\nEmits miasma that\ncorrodes all nearby.
+438	Greedy Tongue
+439	Life core housing\nBennu. Nearly immune\nto arts. Drains life.
+440	Sudrude Giza
+441	Statue with evil will.\nSits as decoration and\nspews hellfire at foes.
+442	Chariot Dasher
+443	Hades Cannon
+444	Hades 4-Cannon
+445	Death Slugger
+446	Purgatory chariot that\ntramples sinners.\nRoams freely firing\nits cannons.
+447	Sacred Breath
+448	Heal Craft: Large - Restore 2500 HP\nBreath of prayer restores allies' HP by 2500.
+449	Sacrifice Arrow
+450	Support Craft: Mid-area - CP+40\nSacrifices own CP to restore allies' CP by 40.
+451	Gorgon Arrow
+452	Atk Craft: Line - Petrify
+453	Grail Sphere
+454	Support S-Craft: Large - Full Guard\nHolds up the Grail and prays. Full guard once (twice at max CP).
+455	Doppel Kevin
+456	Mimics Kevin. Keeps\nfoes in check with a\ncrossbow and backs up\nallies.
+457	Seal Thunder
+458	Reflect Dawn Cannon
+459	Sparking Mirror
+460	Purgatory mirror that\nshows sinners' punishment.\nReflects arts and\nstrikes with thunder.
+461	Haunted Mirror
+462	Purgatory mirror that\nshows the dead's sins.\nReflects physical hits\nand strikes with thunder.
+463	Arc Fencer
+464	Attack Craft: Line - Cast Cancel\n
+465	Thousand Sparrow
+466	Attack Craft: Mid-area\nSword splits and slashes all around.
+467	Holy Breath
+468	Heal Craft: Single - Revive, 50% HP\nHoly power restores vitality.
+469	Doppel Ries
+470	Mimics Ries. Wields a\nflexible Gale Sword and\neven revival arts.
+471	Sly Mo
+472	Lump of living mud ore.\nIf defeated carelessly,\nit roars to rally allies.
+473	Shout
+474	True Twist Staff
+475	Attack Craft: Line - Attack (Pierce)\nStaff shockwave, stronger than before.
+476	True Diamond
+477	Attack Craft: Mid-area, Cancel Craft/Art\nStrikes weak points and cancels casting crafts and arts.
+478	True Whirl
+479	Attack Craft: Mid-area (Target spot)\nImproved Wind Ring that hits more foes.
+480	Secret: Grand Ring
+481	Attack S-Craft: Single\nSecret art applying all spin energy to a strike.
+482	Doppel Estelle
+483	Grimoire mimicking\nEstelle. Skillfully\nwields a staff in a\nbarrage of attacks.
+484	Bind Whip
+485	Attack Craft: Single, Cancel Craft/Art\nA heavy desperate blow. Cancels crafts and arts.
+486	Heaven's Kiss
+487	Support Craft: Mid-area - Haste\nRough encouragement with a whip. Speeds up turns.
+488	Aerial
+489	Mid-area - Attack\nA fierce tornado with stones.
+490	Orbal Down
+491	All - Seal Magic, ADF-30%\nSeals all foes' arts and lowers ADF by 30% for a time.
+492	Downside
+493	Mid-area - DEF-25%
+494	Doppel Scherazard
+495	Grimoire mimicking\nScherazard. Switches\nbetween whip and arts\nto hurt mind and body.
+496	Quick Draw
+497	Attack Craft: Mid-area (Target spot)\nA sharp quick draw that hits more foes.
+498	Snipe Shot
+499	Attack Craft: Single, Cancel Craft/Art\nA quiet, stronger shot. Cancels crafts and arts.
+500	Happy Trigger II
+501	Heal Craft: Mid-area - Restore 2500 HP\nOlivier's mysterious loving art. Greater healing.
+502	Howling Bullet
+503	Attack S-Craft: Mid-area\nSuppressing recoil lets energy shots be denser.
+504	All - Magic Guard\nBarrier guards allies against magic for a time.
+505	Lost Mobius
+506	Mid-area - Attack\nWarped space twists foes' bodies.
+507	Doppel Olivier
+508	Grimoire mimicking\nOlivier. Switches\nbetween gun and arts\nto toy with the battle.
+509	Sturm
+510	Attack Craft: Single, Cancel Craft/Art\nA brilliant combo. Cancels crafts and arts.
+511	Licht Kreis
+512	Heal S-Craft: Large - Revive, 12000 HP\nLoving prayer. At max CP, also DEF+50%.
+513	Sanctus Nova
+514	Attack S-Craft: Mid-area\nPrayer to the Goddess becomes a beam of light.
+515	Doppel Kloe
+516	Grimoire mimicking\nKloe. Switches between\nattack and healing to\nfavor allies.
+517	Flame Smash
+518	Attack Craft: Small area\nFiery blow that knocks foes far back.
+519	Dragner Edge
+520	Attack Craft: Line (Pierce), Cancel\nFlame-running slash. Cancels crafts and arts.
+521	Spiral Edge
+522	Attack Craft: Single, Delay\nA lean spin attack. Delays foes' turns.
+523	Final Break
+524	Attack S-Craft: Mid-area\nSimply stronger slash that sparks a bigger blast.
+525	Dragon Dive
+526	Attack S-Craft: All\nSuperhuman leap and fiery charge.
+527	Doppel Agate
+528	Grimoire mimicking\nAgate. Swings a heavy\nsword with ease and\nlaunches strong moves.
+529	Smoke Cannon II
+530	Vital Cannon II
+531	Heal Craft: Mid-area - Cure, 3500 HP\nFires a shell with every healing effect.
+532	Doppel Tita
+533	Grimoire mimicking\nTita. Uses smoke shells\nto blind and even\nhealing rounds.
+534	Support Craft: Self - STR, DEF+60%\nMastered Dragon art. Boosts STR and DEF for a time.
+535	True Vitality
+536	Heal Craft: Single - Cure, 3100 HP\nCures all but KO and restores 3100 HP.
+537	True Moon Palm
+538	Attack Craft: Single, Confuse\nStronger Moon Palm. 50% to Confuse.
+539	Thunder Kick
+540	Attack Craft: Small area\nLeaps high and kicks like lightning.
+541	Doppel Zin
+542	Grimoire mimicking\nZin. Strengthens own\nbody and charges fiercely.
+543	Fallen Leaf
+544	Attack Craft: Single\nKicks foe up and smashes down. Delays turns.
+545	Sword Art: Eight Leaves
+546	Attack Craft: Single\nAll-out flurry of cuts.
+547	Top Dance
+548	Gale Lancer
+549	Line - Attack, Knockback\nKnocks target far
+550	Sylpharion
+551	Small - MOV+2\nWind spirit power extends movement. MOV+2 for a time.
+552	Doppel Anelace
+553	Grimoire mimicking\nAnelace. Slices foes\nwith sharp, graceful\nswordplay.
+554	Stampede
+555	Attack Craft: Single - DEF-30\nRapid fire at weak points. Lowers foe DEF for a time.
+556	Petro Breath
+557	Single - Attack\nBlows gas. 20% chance to Petrify foe.
+558	Titanic Roar
+559	All - Attack\nPowerful art causing a local quake.

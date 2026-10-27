@@ -1,0 +1,1160 @@
+*** HANDOFF #59 = section 58 = NEWEST. Read 58, 57, 56. Package: Trails3rd_FULL_handoff_59_part1..4of4.zip (unzip ALL FOUR into one folder).
+58. CHAT #24 = V0.7 BUILD (Trails3rd_V0.7_kit.zip). User asked: final proofreading/check/polish + V0.7.
+58.1 FOUND+FIXED the open finding of 57.2: it was the shared SUB000 script library (orig/psp/scripts_SN/SUB000._SN, 4491 bytes). 86 of the 384 map archives carry their own sub000.bin (identical to SUB000._SN) and 83 of them shipped it in JP: door prompt (wo hirakimasuka), Yes/No choice box (ha i / iie), and 39 x 'item wo te ni ireta.' (chest/item pick-up line) -> every chest pick-up in those maps showed JP. Same-size byte patch (strings are NOT strlen-sensitive here: text instr ends with control bytes + NUL): 'Open the door?' padded to 20 bytes, 'Yes'/'No' padded to 10, ' was obtained.' = exactly 14. File: kit/extra/SUB000_EN.bin. build_patch.py now installs it for every archive that has its own sub000.bin and no extra (prints 'SUB000 English library installed in N archives', expect 83); the 5 extra__sub000.bin (e1000 m7408 t4206 u7000 u7002) were patched in place the same way. Offline simulated: replace_entry+readback OK on all 86 archives; 0 JP runs left in SUB000_EN (only bytecode noise remains in extra files). UNTESTED in game.
+58.2 PROOF CHECKS (offline): kit scenes+extra: only 1 line >54 cols (a '[24/36]' marker); hand-translation queue lint (2986 entries): 0 JP, 0 empty, no real typos found (hits were intentional: 'Dim.Dive', 'Pyui pyui!'); t_book01/02 English. NOT possible offline: real proofreading by eye of all 855 hand lines + in-game layout.
+58.3 STILL JP (known, cosmetic/texture): textures (shop tabs, 換金, 移動 banner, intro caption), Monolith sub-menu plate; the 298 archives WITHOUT sub000.bin use some other library - unknown where (not in filelist as sub000): if door/chest prompts still show JP there, find the global library (start.dat/joutyu.dat?) and report map name.
+58.4 FILES: tools/build_patch.py, out/kits/Trails3rd_V0.7/extra/ (SUB000_EN.bin + 5 patched extras); full kit = Trails3rd_V0.7_kit.zip (delivered separately, not inside the parts).
+*** HANDOFF #58 = section 57 = NEWEST. Read 57, 56, 55. Package: Trails3rd_FULL_handoff_58_part1..4of4.zip (unzip ALL FOUR into one folder).
+57. CHAT #23 (kit41 = V1 RELEASE TEST KIT, text complete except textures). User asked: remaining newspaper articles, final audit, V1 kit, 'hand translated?' + 'story playable?'.
+57.1 NEWSPAPERS FIXED: t_book01 rec1 and t_book02 rec7 had their first 224/148 bytes mis-detected as a record header (it is article text), so the JP article stayed. Fix = build_patch passes hp=hc=[0]*10 for t_book01/t_book02 -> tbl.rebuild ports the PC English article by index. Offline: tbl_verify bad=0, 0 JP strings left in both rebuilt books (19545 / 19851 bytes). The English is the XSEED PC text (articles 'The Liber Ark Collapses!' and 'Conspiracy in the Royal City?!'), not hand translation. Not built into an ISO here, UNTESTED in game.
+57.2 AUDIT (offline, kit40 contents): battle/ 0 JP runs; scenes/ only bytecode-noise runs (E1110 M7408 T2500 T4206 T2511 U7000_1). OPEN FINDING: extra/{e1000,m7408,t4206,u7000,u7002}__sub000.bin (whole sub000.bin of those 5 archives) still contain ~41-50 JP runs each: door prompt '<door>wo hirakimasuka?' (un-translated 'Open the door?'), Yes/No choice boxes (haI / iie), '...wo te ni ireta' (obtained) lines. They are NOT in build/al/*.py (no decompiled source), so jp_audit never saw them. Unknown whether reachable in story (likely Star Door / E1000 book area). NEXT: decide by testing these maps in game; if live, patch these byte strings (strings are in bytecode; check delimiters before same-size patch) or add to the lk_build2 ext path.
+57.3 USER QUESTIONS ANSWERED: yes, lines absent from PC text were hand translated (855 hand ids en_001-005, 66 anon strings, 111 names, 124 table lines, 65 map names, 26 fish, battle 1056+87, psele) ; story playable = text complete offline but kit38-41 not yet reported tested in game.
+57.4 FILES: tools/tbl.py, tools/build_patch.py (book fix), out/kits/test_kit41(.zip) = kit40 + book fix + WHAT_TO_CHECK. Texture pack v5 still untested; textures = tomorrow.
+56. CHAT #22b (kit40 = FINAL kit of important text). Offline audit: rebuilt every table via tbl.rebuild -> 0 JP left except t_book01/02 (1 newspaper article each, cosmetic) and t_quest rec40 (English, only a bullet). Compiled scenes/extra: only bytecode noise, no real JP. The '29 unshipped battle files' are binary .bcc (no text). Fixed last t_chain shouts via queue/table_en.tsv (+2 lines), tbl_verify bad=0.
+56.1 COSMETIC LEFT (do later): Monolith sub-menu plate 'ｱ石碑' (t_shop header ptr), t_book01/02 bodies, textures (shop tabs 武器/防具/食材, 換金, 移動 banner, intro caption). Tex pack v5 untested.
+56.2 FILES: out/kits/test_kit40(.zip). NEXT: user result of kit40/kit38 checks (fishing log, town shop names, wheel v5).
+
+55. CHAT #22 (kit39). User: skip cosmetic stuff (Monolith sub-menu plate 'ｱ石碑' = t_shop header pointer artefact, not EBOOT; newspaper t_book01/02 lore) - only IMPORTANT non-texture work. Batches <= 5-6 min.
+55.1 Texture pack: v3 (two hash lines) turned characters BLUE/flickering in PPSSPP; v4 (only 041cc500... line) lost the English wheel; v5 = only 000000006f4134f1f0d67116 line (shipped, result NOT yet reported). If blue again: user enables 'Save new textures' and sends the new PNG names to get the wheel's exact hash.
+55.2 BATTLE LEFTOVERS DONE: queue/battle_left_en.tsv (87 JP->EN, same-length, 108 occurrences in 28 battle/dat files + monsnote.dt2 skill names, space-padded there). Strings are preceded by non-NUL junk bytes and followed by NUL (2 followed by 0xA5 filler); patched by in-place exact-bytes replace on out/kits/test_kit39/battle. Audit: 0 JP strings (>=2 kana/kanji) left in kit39/battle. 29 original battle files with JP not shipped in kit still unverified.
+55.3 FILES: out/kits/test_kit39(.zip) = kit38 + patched battle dir + WHAT_TO_CHECK. NOT built into an ISO by me; user runs RUN_ME.bat.
+55.4 NEXT (important only): user result of kit39 + kit38 checks (fishing log, town shop names, wheel v5); then audit built scripts/tables for real remaining JP (t_chain kept JP 138, t_memo 22, t_quest 4, quizzes 1); the 29 unshipped battle files.
+
+54. CHAT #21 (kit38 = kit37 + t_town). User wants EVERYTHING non-texture in English; batches <= 5-6 min.
+54.1 t_town FIXED OFFLINE: file = u16 offset table + rec0 pointer table + ONE continuous NUL-chunk stream (record = suffix of the stream, chunk = optional id byte + text). New tbl.fix_town(new) (called from build_patch after rebuild+verify) replaces the 47 JP shop-name chunks via _ovr (queue/table_en.tsv has all 47) and remaps every u16 in [0,902) that points into the stream. Checked: 0 JP chunks left, 0 pointer mismatches, 10003 -> 9806 bytes. UNTESTED in game.
+54.2 STAR DOOR 'Episode en...': rebuilt t_quest rec 1-39 now shows correct episode lines (PC strings[2] -> PSP strings[1]); 'en...' was probably truncation by the PSP text box of '[Episode] <long name>' - not reproducible offline. Ask user for a new screenshot if still wrong.
+54.3 REMAINING non-texture: start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1), sub-menu monolith plate 'ｱ石碑' (resident string), t_btrev/t_bmap, then textures. Everything else (scenes, battle, bestiary, tables, books) is English in the kit.
+54.4 FILES: tools/tbl.py (fix_town), tools/build_patch.py, out/kits/test_kit38(.zip).
+
+*** HANDOFF #55 = section 54 = NEWEST (sec 53 below it). Read 54, 53, 52.
+*** (old line) HANDOFF #54 = section 53 = NEWEST. Read 53 first, then 52, 51. Package: Trails3rd_FULL_handoff_54_part1..4of4.zip - unzip ALL FOUR into one folder.
+*** USER RULES (unchanged): batches <= 4-5 min (user said so in chat #20); ALWAYS present all 4 parts + new files; each part < 30 MB; short replies; user then says "continue". User said: forget captions (textures/images) for now.
+53. CHAT #20 (kit37). User did NOT report kit36 result yet (bestiary still UNTESTED in game).
+53.1 MONUMENT PLATE ROOT CAUSE + FIX: t_shop records = 18-byte header + u16 title ptr + u16 array ptr + INLINE cp932 title (e.g. 拠点・石碑) + pointer array. tbl.rebuild did not remap those header-INTERNAL absolute pointers when records moved (and could not change the inline title) -> 'onument' (title ptr off by one / stale). tbl.rebuild(..., inline=True) now (a) replaces inline JP header text via KEPT_OVERRIDE (石碑->Monolith, 拠点・石碑->Base: Monolith, 影の石碑 etc.), (b) remaps header-internal pointers to the new record start (skips bytes inside the inline text). build_patch uses inline=True for t_shop only. Offline checked: every record title ptr = rec+18, array ptr = rec+18+len(title)+1. t_town NOT done (its shop names are strings with other layout; still JP). Sub-menu plate 'ｱ石碑' (resident string) still JP.
+53.2 NEW TABLES: t_world2 (65 map names, hand translated queue/world2_en.tsv) via tbl.rebuild_world2 (8-byte hdr + name, exact match) ; t_fish (26 descriptions: PC T_FISH rec3[220:246] rewrapped <=38-50 cols, 4 lines max, inserted into queue/table_en.tsv as KEPT_OVERRIDE keys incl. literal backslash-n). Both added to DEFAULT in build_patch (UNTESTED in game; t_fish fishing mini-game text ported from PC by slots, 0 JP desc left). tools/add_fish_world2.py regenerates the tsv lines (idempotent).
+53.3 _ovr now uses LONGEST suffix match. Added 5 full-string t_town location overrides (e.g. 帝国方面国境・ハーケン門 -> Imperial Border: Haken Gate) because new short map-name keys would otherwise half-translate them.
+53.4 NEXT: (1) user result of kit37 (bestiary names/headers after space-pad, monolith plate 'Base: Monolith'/'Monolith', map names, fish descriptions in fishing log); (2) t_town shop-name headers; (3) Star Door Episode 'en...'; (4) start.dat leftovers; (5) textures LAST.
+53.5 FILES: tools/tbl.py, tools/build_patch.py, tools/add_fish_world2.py, queue/table_en.tsv, queue/world2_en.tsv, out/kits/test_kit37(.zip) = kit36 + these tools + table_en.tsv.
+
+*** HANDOFF #53 = section 52 = NEWEST. Read 52 first, then 51, 50, 49, 48. Package: Trails3rd_FULL_handoff_53_part1..4of4.zip - unzip ALL FOUR into one folder.
+*** USER RULES (unchanged): batches <= 8-9 min; ALWAYS present_files all 4 parts + new files; each part < 30 MB; short replies; user then says "continue".
+52. KIT 35 RESULT + BESTIARY FIX = KIT 36 (chat #19)
+52.1 USER TESTED kit35 (screens in notes/screens_kit35/; blankSpaceNoName.png = Prologue list, blank highlighted row; blankSpaceOpensThis.png = its detail page: blank header, Lv90 HP3242 STR1237, Found at Lusitania; one JP comparison shot of the Sixth_2 list).
+     NOW ENGLISH (confirmed): battle UI (RemoteAbility banner, SPD/DEF/AGL), shop Buy/Sell/Exch./Cancel + item names + 'Used in:' list + 'Buy goods.', Star Door page (title/labels/Answer/Bonus), bestiary chapter headers + '????' placeholders, bestiary entries that work (Steel Cougar, Worm, R.Soldier, R.Officer, Agent-Gun, Courier, Photon Raus).
+     STILL BROKEN / JP: (a) bestiary names (see 52.2); (b) shop category column 武器 防具 食材 still JP (Accessory/Items EN) = IMAGES per sec 50 -> texture phase; (c) monolith shop plate: main Buy menu shows 'onument' (first letter lost), the item sub-menu shows 'ｱ石碑' = JP (user tested ONLY that Monument) -> see 52.5; (d) Star Door 7 '[Episode]' line shows 'en...' (suspect tools/tbl.py _fix_door episode taken from PC strings[2]; check what PC strings[2] really is).
+52.2 BESTIARY ROOT CAUSE (proved offline, not yet confirmed in game): monsnote.dt2 records are parsed by STRLEN (sequential fields: crafts/binary + title + name + desc). Kit35 shortened EN strings and NUL-padded the rest -> every later field read from the wrong place. Symptoms: blank list names/headers (read hits padding), garbage names that are TAILS of earlier craft strings (Kanone -> 'Mines' = tail of 'Set Mines'; Morgan -> 'sile Dmg+Faint'; Phantom Thief -> 'c: A Little'; D.Phantom -> 'rea Dmg+Cast Cancel'), wrong stats on detail page. Correlation: all 12 working entries had 0 shrunk bytes between previous desc and their name; 20/21 broken ones had >0 (Col. Reed unexplained).
+52.3 FIX (kit36, UNTESTED in game): same-size patch but pad with SPACES (0x20) not NUL, so strlen == JP strlen. Asserted: NUL positions identical to the JP original (1885 strings re-padded; kit35 file failed that check). tools/monsnote_patch.py now does this automatically (verified: regenerates kit36 monsnote.dt2 byte-identical). tools/fix_monsnote_spaces.py JP.dt2 NULpadded.dt2 OUT = standalone re-pad. tools/monsnote_probe.py dumps JP=>EN per record + NUL layout check. Shipped: out/kits/test_kit36 (dir) + out/kits/test_kit36.zip (identical to kit35/test_kit32 except battle/monsnote.dt2 + WHAT_TO_CHECK.txt). build_patch.py unchanged (it just reads the file; also writes it into joutyu.dat).
+52.4 GENERAL RULE (new): for ANY same-size in-place text patch, check whether the engine reads the file by strlen. If yes, pad with spaces (or otherwise keep strlen). battle_patch.py (battle/dat/*._dt, 323 files) still NUL-pads; battle text looks right in game so left alone, but if a craft/enemy name shows garbage or a skill list drifts, try space padding there first (names may then be slightly off-centre). psele.txt is already space-padded.
+52.5 MONUMENT PLATE (open, not investigated this chat): 51.1 known gap = t_shop/t_town banner strings live inside record headers so tbl.rebuild cannot change them; the 'onument' (leading 'M' lost) suggests a 1-byte shift - check whether the t_shop copy in joutyu.dat/start.dat was rebuilt with a shorter string + NUL pad (same strlen-drift class as 52.2) and compare bytes of orig vs patched t_shop around 石碑. The sub-menu plate ('ｱ石碑' / '7石碑') is a different resident string, still JP.
+52.6 NEXT: (1) user result of kit36 (bestiary list names, detail header + stats, trailing-space look); (2) fix 52.5 monolith plate + t_town/t_shop header strings; (3) Star Door Episode 'en...'; (4) Moon/Star/Sun5 riddle overflow check (46.3); (5) start.dat leftovers, t_fish, t_world2; (6) textures LAST (shop tabs 武器/防具/食材, 換金, 移動 banner, intro caption).
+52.7 FILES NEW IN 53: tools/monsnote_patch.py (updated), tools/fix_monsnote_spaces.py, tools/monsnote_probe.py, out/kits/test_kit36 + .zip, notes/screens_kit35/*.png, notes/kit35_result.txt. User also re-uploaded: test_kit35.zip (= out/kits/test_kit32 dir, identical), texture_pack_battle_wheel_v3.zip (= out/texrep/pack_v3), ULJM05353_EBOOT.BIN (md5 d09cfa33..., identical to orig/psp/ULJM05353_EBOOT_decrypted.BIN).
+
+*** HANDOFF #49 = section 51 = NEWEST. Read 51, 50, 49, 48.
+51. BATCH 48 (non-texture tables). queue/table_en.tsv (JP<TAB>EN, \x01/\x02 escapes; matched as string SUFFIX so control-byte prefixes survive) loaded by tools/tbl.py KEPT_OVERRIDE and applied to every string in tbl.rebuild; tbl_verify compares against _ovr(PC). Translated 124 entries: t_chain battle shouts (58), t_memo (Orbal Art n / Crystal Circuit n), t_quest 3 stars, t_quiz clear line, t_book01/02 headlines, t_cook2 header, Joshua. Offline: all verify bad=0 (t_chain, t_memo, t_quest, t_quiz01-04, t_cook2, t_name, t_town ...). Shipped in test_kit32 (tbl.py, tbl_verify.py, table_en.tsv).
+51.1 KNOWN GAP: t_town shop names (47 e.g. 《ロレント支部》) and t_shop 石碑/拠点・石碑 banner strings sit INSIDE record headers (parse treats as header bytes), so rebuild cannot change them. Entries exist in table_en.tsv for when the parser is fixed (idea: make tbl.parse treat NUL-delimited cp932 JP inside header as strings, or patch headers + pointer fixup). t_town/t_shop are in DEFAULT list so they ship but remain JP there.
+51.2 NOT DONE: t_fish (26 descriptions, not in DEFAULT; PSP-only strings in 1562 kept), t_world2 (65 map names, PSP-only, not in DEFAULT), t_bmap/t_chrpos/t_kage/t_msas, t_ittxt/t_ittxt2/t_magic garbage entries (binary noise, ignore), start.dat leftovers.
+51.3 NEXT: fix header-string issue (t_town, t_shop), then t_fish + t_world2 (add to DEFAULT after verifying), start.dat leftovers, E1000 books already clean in build/al.
+
+*** HANDOFF #48 = section 50 = NEWEST. Read 50, 49, 48.
+50. SOURCE HUNT (chat #18, batch 47): 移動 battle banner: NOT in EBOOT text (only 4 unrelated menu hits, already translated) -> IMAGE (battle itp, texture phase). Intro caption 'ラインフォルト社製、新型飛行客船《ルシタニア号》': searched all scripts/tables/kit1/names_files/EBOOT: no exact string (E0610 line is different) -> IMAGE/movie subtitle (texture phase). Shop categories 武器/防具/道具/食材 + 拠点・石碑 banner: images too. => ALL remaining JP seen in kit32 screenshots are textures except what kit32 already fixes.
+50.1 NEXT (non-texture): start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1), t_memo 22 extra, t_quest 4, E1000 books (145 AnonymousTalk), then textures (itp codec types 0x3ed/0x3ee unsolved, see sec 41; PPSSPP texture-pack replacement works, wheel v3).
+
+*** HANDOFF #47 = section 49 = NEWEST. Read 49, then 48.
+49. psele.txt (Party Edit character captions) TRANSLATED: queue/psele_en.txt (same size 1312, lines space-padded, ASCII). Shipped in test_kit32/battle/psele.txt; build_patch --battle routes *.txt to data_3rd/text/ (in place). Log should now say 325 files patched. UNTESTED.
+49.1 NEXT: 移動 banner source, intro caption ルシタニア号, shop categories (probably images -> texture phase), start.dat leftovers, E1000 books. Still need user's log line + new screenshots of kit32 battle.
+
+*** HANDOFF #46 = section 48 = NEWEST (kit32 RUN_ME fixed). Read 48 first.
+48. KIT32 RESULT (6 screenshots, chat #18): WORKS: "Open the door?" (Yes/No) English; Buy/Sell/Exch./Cancel + 'Accessory' + 'Buy food.' English; Party Edit title/Kevin name+status English.
+48.1 STILL JP: battle craft name banner (Snivel Shoot -> JP) = battle/dat patch NOT applied: RUN_ME.bat else-branch (no EBOOT found) skipped --battle (BUG, fixed in kit32 re-zip: --battle now always, also looks for ULJM05353_EBOOT_decrypted.BIN). Need user log line "battle/dat files patched in place: 324".
+48.2 STILL JP (not yet handled): Kevin class description caption in Party Edit (text/psele.txt contains it: 様々な法術を用いて味方を支え...); battle command banner 移動 (Move; image or EBOOT/start.dat/t_ittxt? 4 hits in EBOOT); intro caption ライヘンフォルト社製、新型飛行客船《ルシタニア号》 (only t_town + bgmtbl.txt hits -> probably a scene/texture/movie subtitle); shop category list 武器/防具/道具/食材 (likely images or start.dat t_shop?) and banner '拠点・石碑' (known: t_shop; texture banner).
+48.3 NEXT: psele.txt (character descriptions), then find sources of 移動 banner + intro caption + shop categories.
+
+*** HANDOFF #45 = section 47 = NEWEST (files renamed handoff_45). Read 47, then 46, 45, 44.
+47. HANDOFF #45 (chat #18, batch 45, small): t_name Yoshua FIXED
+47.1 tools/tbl.py: KEPT_OVERRIDE {JP cp932 suffix -> EN} applied to PSP strings kept (no PC slot). Now ヨシュア (record string 'w'+name @5155) -> 'Joshua'. Offline: tbl.rebuild(PSP t_name, PC T_NAME) verify (115, 0), no JP left in rebuilt t_name. Copied into test_kit32 (tbl.py). Add more entries to KEPT_OVERRIDE for other tables' leftovers.
+47.2 NEXT: kit32 user result; start.dat leftovers (t_status t_se ...), t_memo 22 extra, t_quest 4, E1000 books.
+
+*** HANDOFF #44 = section 46 = NEWEST (files renamed handoff_44). Read 46 first, then 45, 44.
+46. HANDOFF #44 (chat #18, batch 44): BESTIARY monsnote.dt2 PATCHED (same-size, in place)
+46.1 tools/monsnote_patch.py IN_DIR OUT_DIR = battle_patch dictionary (1869 strings matched; battle_patch now tolerates up to 3 leading control bytes <0x20) + queue/monsnote_extra.tsv (8 extra JP->EN: Assault Combo, Abyss Fall, Arachne descriptions, HP Drain+Kill, Chaff Grenade, Dark Curse, Hellroar). 16 extra replacements.
+46.2 build_patch --battle DIR now routes monsnote*.dt2 to PSP_GAME/USRDIR/data_3rd/monsnote/ (ISO LBA known). KIT 32 updated (battle/ has 324 files). joutyu.dat copy of monsnote NOT patched (compressed; check if bestiary reads loose or joutyu copy).
+46.3 Left JP in dt2: ~one garbled entry 'pU...セナーデュウ' @227544 (unknown), binary noise. dt1 is a plain text id list (no JP to translate except ids with comments).
+46.4 NEXT: user test result of kit32; t_name Yoshua@5157; start.dat leftovers; E1000 books. 
+
+*** HANDOFF #43 = section 45 = NEWEST (parts renamed handoff_43; same 4-part layout, unzip ALL FOUR into one folder). Read section 45 first, then 44, 1, 28-34 + notes/INSTRUCTIONS.txt.
+*** USER RULES: batches <= 8-9 min; ALWAYS present_files all 4 parts + new files; each part < 30 MB; short replies; user then says "continue".
+
+================================================================================
+45. HANDOFF #43 (chat #18)  <- NEWEST.  BATTLE TEXT FITS BUDGET + battle_patch.py WRITTEN; BUILD STEP STARTED
+================================================================================
+45.1 DONE: queue/battle_en_e.tsv (override file, last) shortens all 57 over-budget enemy/skill/description strings -> tools/battle_chk.py reports over 0 of 1056.
+45.2 NEW: tools/battle_patch.py SRC_DIR OUT_DIR  (python3 tools/battle_patch.py orig/psp/kit1/data_3rd/battle/dat build/battle_out) -> 323 files / 1953 strings patched, all 1056 JP strings matched, sizes unchanged. 
+     build_patch.py now has --battle DIR (writes each patched file in place at its LBA under PSP_GAME/USRDIR/data_3rd/battle/dat/; size-checked). UNTESTED end-to-end (no ISO in sandbox).
+45.3 Regen of build/al verified again (same 5 intentional JP literals). rec_all.sh was run on build/al (see 45.4). NOTHING TESTED IN PPSSPP YET since batch 42 text.
+45.4 DONE THIS CHAT: rec_all 395 json/0 failures -> lk_build2 (906 text instrs in ext, 0 JP kept) -> dumpins -> lk_verify2 = 0 problems (same 1980, A 555, B 6431, C 12947, ext 906) -> KIT 32 = test_kit32.zip (394 scenes + extra + battle/ + RUN_ME.bat with --eboot + --battle; UNTESTED). build/rec, build/lk, build/battle_out are regenerable (not stored). Old recipe was: lk_build2 -> dumpins (2 halves) -> lk_verify2 -> build_patch (kit32 = scenes + --eboot + --battle build/battle_out). Then user tests kit32 in PPSSPP (screenshots: door prompt "Open the door?", enemy names in battle, bestiary still JP).
+45.5 NEXT: user tests kit32 in PPSSPP and reports. Then bestiary monsnote, t_name Yoshua, start.dat leftovers, E1000 book AnonymousTalk.
+45.6 STILL TODO (unchanged from 44.4): bestiary monsnote.dt1/dt2, t_name Yoshua@5157, start.dat leftovers, E1000 book AnonymousTalk (145), textures LAST.
+
+*** HANDOFF #42 = section 44 = NEWEST (parts renamed handoff_42; same 4-part layout, unzip ALL FOUR into one folder). Read section 44 first, then 1, 28-34, 41-43 + notes/INSTRUCTIONS.txt.
+*** USER RULES: batches <= 6 min; ALWAYS present_files all 4 parts + new files; each part < 30 MB; short replies; user then says "continue".
+
+================================================================================
+44. HANDOFF #42 (chat #17)  <- NEWEST.  ALL HAND IDS TRANSLATED; BATTLE DICT DRAFTED; NOTHING COMPILED/TESTED YET
+================================================================================
+44.1 DONE: queue/en_005.tsv = hand ids 340-372,381-457,458-538,548-679 (ASCII only; "Mueller" not umlaut). ALL 855 ids in unique.tsv now have English (en_001..005). batch42 anon_en.tsv merged (+1 line: wo te ni ireta -> " was obtained.").
+     New tools: tools/apply_anon.py (re-apply queue/anon_en.tsv exact literals, cp932), tools/apply_names.py + queue/names_en.tsv (111 JP->EN, fills BuildStringList leftovers), tools/battle_chk.py (budget check).
+     Regen pipeline VERIFIED this chat (~10 s): export PYTHONPATH=third_party/patched/Decompiler:third_party/patched/PyLibs-master:tools/stubs ;
+       python3 tools/align_scripts.py orig/psp/scripts_SN orig/pc_gog_extracted/DT21_decompiled build/al --wrap 50 --rows 3
+       python3 tools/port_names.py orig/psp/scripts_SN orig/pc_gog_extracted/DT21_decompiled build/al ; python3 tools/apply_hand.py build/al ; python3 tools/apply_misc.py build/al
+       python3 tools/apply_anon.py build/al ; python3 tools/apply_names.py build/al ; python3 tools/jp_audit.py build/al   -> only 5 intentional symbol/title literals JP (E1000? U7000_1 gibberish, T2513, chapter titles).
+     build/al is regenerable (not stored). out/hand_py is the OLD shrunk set - do not use.
+44.2 NEXT BUILD (not run yet): sh tools/rec_all.sh $PWD/build/al $PWD/build/rec (setsid nohup; ~5 min, 395 json) -> lk_build2 -> dumpins (2 halves) -> lk_verify2 -> build_patch (kit32).  Section 33.1 has arg order.
+44.3 BATTLE/DAT ENEMY TEXT: notes/battle_dat_jp_strings.tsv (1056 rows, idx = row order after header, col2 = cp932 byte budget). Draft English in queue/battle_en_a2, _b, _b2, _b3, _c, _c2, _c3, _d .tsv (idx<TAB>EN, later file/line overrides; literal backslash-n = the 2-char sequence in the data, NOT a newline).
+     tools/battle_chk.py lists entries over budget: ~57 STILL OVER (mostly idx 800-1054 long descriptions + some names) -> shorten (EN bytes <= JP bytes, NUL padded). Strings are in plain cp932 battle/dat/dt*._dt (data_3rd/battle/dat, loose, same-size in-place).
+     TODO: write tools/battle_patch.py (find NUL-terminated cp932 strings in each dt file, exact JP match -> padded EN; keep file size) + build_patch hook writing patched files in place at their LBA (like EBOOT, 34.4). Untested.
+44.4 STILL TODO (non-texture): bestiary monsnote.dt1/dt2 (+joutyu.dat copy), t_name Yoshua@5157, start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1 *_pt), t_fish, t_mg0500, t_btrev, t_bmap/t_chrpos/t_kage/t_msas/t_world2/psele.txt, t_memo 22 extra, t_name 47 extra, t_quest 4. Then textures LAST (section 43).
+44.5 User's uploads this chat: texture_pack_battle_wheel_v3.zip (works), saves zip (old JP saves), test_kit31.zip (previous kit), scripts1_1.zip (= orig mc1, already in orig/psp/scripts_mc1).
+*** HANDOFF #41 = section 43 = NEWEST (parts renamed handoff_41; same 4-part layout, unzip ALL FOUR into one folder). Read section 43 first, then sections 1, 28-34, 41, 42 + notes/INSTRUCTIONS.txt.
+*** USER RULES: batches <= 6 min; ALWAYS present_files all 4 parts + new files; each part < 30 MB; short replies; user then says "continue".
+*** USER DECISION (chat #16): finish ALL non-texture translation FIRST; do PPSSPP texture-replacement packs LAST.
+
+*** HANDOFF #40 = section 42 = NEWEST (parts renamed handoff_40; same 4-part layout). Read section 42 first.
+*** HANDOFF #39 = section 41 = NEWEST. NOW SPLIT INTO 4 ZIPS (each < 30 MB): Trails3rd_FULL_handoff_39_part1of4 ... part4of4.
+*** Unzip ALL FOUR into the same folder (they merge into one work/ tree). They replace handoff 36/37/38 (A/B). New Claude: read sections 1, 28-34, 41 + notes/INSTRUCTIONS.txt, then say continue.
+*** USER RULES: sessions/batches <= 8-9 min; ALWAYS present_files all 4 parts + kit/scripts; keep each part < 30 MB.
+
+================================================================================
+HANDOFF.txt - Trails in the Sky the 3rd (PSP, JP) -> English patch   (handoff #36 = section 40 = NEWEST)
+*** ONE COMPLETE MERGED HANDOFF: Trails3rd_FULL_handoff_36_partA.zip + _partB.zip (unzip BOTH into the same folder).
+*** They replace EVERYTHING older (handoff 26 A/B, deltas 21/23/24/29 ...). No deltas exist any more.
+New Claude: read section 1 (goal), sections 28-34 (newest state), notes/INSTRUCTIONS.txt, then say "continue". Do NOT make the user re-explain.
+(old text of earlier handoffs follows unchanged)
+================================================================================
+HANDOFF.txt - Trails in the Sky the 3rd (PSP, JP) -> English patch   [update every batch]   (handoff #26 = section 30 = NEWEST)  *** ONE COMPLETE HANDOFF (all earlier parts/deltas merged) ***
+FINAL MERGED HANDOFF = Trails3rd_FULL_handoff_26_partA + partB: unzip BOTH into the same folder; they replace ALL older handoff zips. (old text follows) Trails3rd_handoff_15_partA (tools/notes/third_party/out/orig/psp) + _partB (orig/pc_gog + pc_gog_extracted). Unzip BOTH into the same folder.  New Claude: read this + notes/INSTRUCTIONS.txt, then
+say "continue" to the user. Do NOT make the user re-explain anything.
+================================================================================
+
+1. WHAT THE USER WANTS
+- Full English version of the PSP game "Eiyuu Densetsu Sora no Kiseki the 3rd" (JP, disc
+  ID ULJM05353, version 1.01), which never got English on PSP.
+- Method: PORT existing English text instead of translating from scratch:
+    * PRIMARY source: official English PC release (XSEED, 2017), user owns the GOG copy.
+      (User thinks PC text is closer to PSP than the Vita "Evolution" text. Plausible,
+      but TCRF notes PSP JP differs from PC JP, so alignment/cleanup will be needed.)
+    * SECONDARY: Vita "Evolution" fan translation (user says it exists; not obtained yet).
+    * Lines with no match: Claude translates by hand in batches (notes/INSTRUCTIONS.txt rules).
+- User prefs: FAST, fewest steps, ONE simple instruction at a time, short replies,
+  Windows + PowerShell + Python 3, NO 7-Zip installed, daily message limits.
+  Tests in an emulator (PPSSPP presumably) and reports back.
+- Legal: user wants to avoid legal trouble. Told them personal use is low risk; the
+  patch tools should ship ONLY user edits/diffs, never XSEED text; public release is
+  their own decision (gray area). Do not lecture again.
+- User's folder on their PC: <user folder>\Kiseki 3rd
+  (contains Trails3rd.iso, scripts, upload_me\, kit1.zip).
+- Sandbox NOTE: network was enabled in chat #3 (pip + GitHub worked). If a new chat has it disabled, everything
+  needed is already inside this zip (tools/, third_party/patched/, orig/pc_gog_extracted/).
+
+2. FILES THE USER ALREADY UPLOADED (copies in this zip)
+  orig/psp/filelist.txt   full ISO file list (12359 entries; made by tools/list_iso.py)
+  orig/psp/PARAM.SFO
+  orig/psp/kit1/          small PSP files extracted by tools/extract_kit.py (5.9 MB):
+                          data_3rd/text/*._dt, system/*, chr/*.txt, bgm/bgmtbl.txt,
+                          battle/dat/*._dt, and 2 samples per extension from map4/
+  orig/pc_gog/            ED6_DT21.dir/.dat (1.8 MB) and ED6_DT22.dir/.dat (0.5 MB)
+                          from the user's GOG English install (.dat were small, so the
+                          user may have only a subset of archives; ask for others as needed:
+                          screenshot showed ED6_DT06,07,09,20-39,3A,3C,48-51 .dat/.dir)
+  third_party/EDDecompiler-master.zip  (the-database/EDDecompiler fork, 24 MB)
+  third_party/PyLibs-master.zip        (ZhenjianYang/PyLibs, needed by the decompiler)
+  NOT in zip (too big / user keeps): Trails3rd.iso, EBOOT.BIN (3.3 MB, encrypted ~PSP;
+  user has it at upload_me\EBOOT.BIN), the other ED6_DT*.dat files.
+
+3. WHAT WE LEARNED ABOUT THE PSP ISO
+- Plain ISO (not CSO). Game files live under PSP_GAME/USRDIR/data_3rd/ plus
+  PSP_GAME/USRDIR/data.lst (198 KB index, format not examined yet).
+- PSP_GAME/SYSDIR/EBOOT.BIN and BOOT.BIN are ENCRYPTED (~PSP header). Cannot scan strings
+  in them. Patch by REPLACING FILES in the ISO; hard-coded EBOOT strings need a decrypted
+  EBOOT later (ask user for a decrypted dump, e.g. PPSSPP can dump/decrypt, only if needed).
+  There is also SYSDIR/UPDATE/EBOOT.BIN + DATA.BIN (20 MB) - purpose unknown.
+- Biggest groups in data_3rd: map4 (3209 files, scenes/maps), se, chr, battle2 (.bcc),
+  effect, battle/dat (582 small ._dt = battle tables), visual (.itp images), cooking,
+  minigame, monsnote, text (60 files), system (fonts), etc (UI .itp images).
+  Many menus/UI labels are images (.itp textures) -> not text; handle later if wanted.
+- data_3rd/text/*._dt : Shift-JIS text, file begins with an array of u16 LE offsets into
+  the file (same idea as PC T_*._DT). Examples: t_item, t_item2, t_ittxt, t_ittxt2 (item
+  names/descriptions), t_magic, t_quartz, t_quest, t_book00-16, t_status, t_btset1/2,
+  t_name, t_town, t_world, t_shop, t_cook2, t_fish, t_quiz01-04, t_title, ...
+  (psele.txt is a plain Shift-JIS .txt with CRLF).  NOT YET PARSED/VERIFIED in detail.
+- Story scripts: data_3rd/map4/<scene>.mc1/.mc2/.mc3/.mce/.mcl/.mcp/.mcz/.mcc.
+  These are archives. Layout (verified on samples):
+      u32 count repeated 4 times (16 bytes)   e.g. 04 00 00 00 x4
+      then count entries of 32 bytes: name[16] (NUL padded), u32 offset, u32 packed_size,
+      u32 unpacked_size, u32 0.      (offset is from start of the archive file)
+  .mc1 holds  <scene>.bin (scenario script!), .pre, .dtm, and .itp portraits.
+  Each packed entry starts with 12-byte header: u32 (packed-4?), u32 unpacked_size, u32 =2,
+  then Falcom-LZ chunk(s). First chunk header looked like  ab 03 00 80  (u16 size, flags).
+  Literal text like "Rolent" is visible in the stream.
+  *** The decompressor is NOT solved. notes/dec_attempt_FAILED.py is a wrong guess.
+  *** Use the real one from EDDecompiler/PyLibs (third_party zips) - they have the Evo
+      3rd scenario decompiler: Decompiler/ED63RDEvoScenarioScript.py and compression code.
+      Usage from README:  set PYTHONPATH=EDDecompiler/Decompiler;PyLibs
+      python ED63RDEvoScenarioScript.py --gp="<folder containing data_3rd>" <script file/folder>
+      (README says the game folder normally comes from data.psarc of the Vita game; for PSP
+       the .bin must first be pulled out of the .mc1 archives - check whether the tool
+       handles PSP .bin directly.)
+- Fonts: system/pspfont.dat (650 KB), sfont.itp, ascii.itp, jis2ucs.bin / ucs2jis.bin
+  (128 KB each). Must check whether Latin letters render in dialogue/menus and whether
+  text boxes are proportional or fixed-width. NOT checked yet.
+
+4. WHAT WE LEARNED ABOUT THE PC (GOG) SIDE
+- Install folder has ED6_DT*.dat + .dir pairs (Falcom "LB DAT/LB DIR" packs), no loose text.
+  Per SoraVoiceScripts README: T_FISH._DT etc. are inside ED6_DT22.dat/.dir (the 3rd).
+  Scenario scripts (._SN) are in a different DT (likely DT21; verify from the .dir names).
+- NEXT STEP I WAS ABOUT TO DO: parse ED6_DT21.dir / ED6_DT22.dir (uploaded), write an
+  unpacker (tools/ed6_unpack.py) that lists/extracts files, and compare with PSP ._dt.
+  The EDDecompiler zip likely already contains an ED6 unpacker (search for dir/dat code).
+
+5. PLAN / ROADMAP
+  A. Parse + extract PC DT21/DT22 (names, formats). List which PC files exist.
+  B. Parse PSP data_3rd/text/*._dt  and PC T_*._DT; align by file name + entry index;
+     auto-inject English into a PSP-side table ("done/" files: id|English).
+  C. Get the PSP scenario .bin out of map4/*.mc1 (real decompressor), decompile with
+     EDDecompiler, extract JP dialogue; same for PC ._SN (decompile with the FC/SC/3rd
+     decompiler for the PC version in the same repo). Align scene-by-scene, line order,
+     speaker, fuzzy JP match. Unmatched -> hand translation queue (queue/).
+  D. Repack: rebuild .mc1 archives (needs a COMPRESSOR or store-uncompressed if the
+     engine accepts it - test!), then replace files inside a COPY of the ISO (keep sector
+     allocation or append; verify by reading back). Original ISO never modified.
+  E. Font/width: measure chars per line; wrap/trim English; add Latin glyphs if missing.
+  F. Test kit: tiny first test (change one line in one scene) -> user runs in emulator ->
+     then full run.  Deliver patcher as a Python script + xdelta/IPS-like diff if possible.
+  Prove the pipeline on ONE text table and ONE scene before the bulk work.
+
+6. STYLE GUIDE / GLOSSARY
+  (empty so far) - follow XSEED PC English for names/terms so ported and hand-written
+  lines stay consistent. Build the glossary from the PC text. Straight quotes, ASCII only.
+
+7. PROGRESS
+  0 / ? lines translated. Pipeline not started. Done so far: ISO listing, file kit,
+  format notes above. Tools in tools/: list_iso.py (lists ISO + extracts PARAM.SFO and
+  EBOOT.BIN), extract_kit.py (makes kit1.zip with small files).
+
+8. OPEN QUESTIONS / TODO FOR USER (ask only when needed, one at a time)
+  - Which emulator/version they test with (assume PPSSPP).
+  - Vita fan patch: do they have it? (optional, later)
+  - Other PC archives (ED6_DT2x .dat/.dir) when needed; they said the folder is full,
+    they only uploaded DT21 and DT22 so far.
+  - A way to build/test: whether the PSP engine accepts uncompressed scripts.
+
+9. USER'S COMMAND CHEAT SHEET (PowerShell, in their Kiseki 3rd folder)
+  python list_iso.py Trails3rd.iso
+  python extract_kit.py Trails3rd.iso
+================================================================================
+
+
+10. NEWEST FINDINGS (handoff #2)
+- third_party/EDDecompiler-master.zip is an OLDER snapshot: it has the PC decompilers
+  (Decompiler/ED63RDScenarioScript.py + ED63RDScenaFile.py = PC 3rd ._SN scripts, also
+  ED6FC/SC) but NO "Evo" script, NO PSP .mc* support, NO decompressor. Useful later for the
+  PC English side (._SN dialogue). The real Evo decompiler is in the newer GitHub repo
+  the-database/EDDecompiler (needs network, or user downloads newer zip).
+- PC LB DIR/LB DAT format SOLVED, tools/ed6_unpack.py works:
+    dir header 16 bytes: 'LB DIR' 1A 00, u32 count, u32 0
+    entry = 36 bytes: name[16] ('T_NAME  ._DT'), u32 sizeA, u32 flag(0x8000 or 0x4000),
+            u32 sizeB, u32 timestamp, u32 offset(in .dat)
+    Run: python ed6_unpack.py ED6_DT22 outdir   (name without extension)
+  Result on the user's files: DT22 -> 72 files (T_*._DT incl T_BOOK, T_ITEM, T_ITTXT, T_MAGIC,
+  T_QUEST, T_STATUS ...), DT21 -> 430 of 1224 entries (scena ._SN etc). Many entries were
+  "not in this .dat" (offset beyond file end): the uploaded ED6_DT21.dat is only 1.8 MB and
+  DT22.dat 0.5 MB - CHECK with user whether these are the real full sizes (real DT21 should be
+  far bigger; maybe upload was truncated, or entries are empty slots). Ask the user for the
+  real file sizes (PowerShell: Get-Item ED6_DT21.dat | Select Length).
+- PC extracted T_*._DT files are NOT plain: e.g. T_NAME shows 'Joshua' with binary bytes
+  interleaved and the first u32 = filesize-1. => PC files are probably Falcom-LZ compressed
+  (dir flag 0x8000/0x4000). So the SAME compression family appears on PC and PSP.
+- PSP compressed-entry framing (verified on 11 entries): 12-byte header
+  [u32 payload_len(=packed-4)][u32 unpacked_size][u32 type=2 (some entries type 4, e.g.
+  .vag in .mcz)] then ONE chunk: u16 chunk_size (counts itself, stops 8 bytes before the end),
+  u16 flags (seen: 8000, 0400, 8200, a000, 4000), data..., then an 8-byte trailer
+  01 06 00 00 06 XX 00 00  where XX = first output byte of the file (verified on bin/pre/dtm).
+  First 15 bytes of c0301.bin after flags are plain literals: "Rolent\0 04 c4 01 C0301".
+  Brute force over LSB-first 16-bit-flag LZ variants (notes/brute_lz_FAILED.py) found NOTHING;
+  the real scheme differs (maybe 32-bit flag words, bit order, or different match coding).
+  Tiny test vectors: c0301.dtm = 29 bytes -> 8 bytes output; a0028.dtm identical bytes:
+  19 00 00 00 08 00 00 00 02 00 00 00 09 00 00 82 ff 01 1c 00 00 01 06 00 00 06 ff 00 00
+  (chunk=09 00, flags=00 82, literals ff 01 1c 00 00, trailer 01 06 00 00 06 ff 00 00; output
+  is 8 bytes, probably ff 01 1c 00 00 + 3 bytes of match/trailer -> use as decoder test).
+- Plain (NOT compressed) PSP files: data_3rd/text/*._dt are readable Shift-JIS as extracted from
+  the ISO. Some (t_name, t_status...) are record tables with embedded names, others
+  (t_item/t_ittxt/t_magic/t_quest/t_book) are offset-table text. PSP t_item has 783 entries,
+  PSP t_item2 651, t_magic 405, t_quest 67, t_quartz 200, t_town 225, t_world 69.
+  PC offset tables look different (4-byte prefix) -> parse after decompression.
+
+11. WHAT TO DO NEXT (in order)
+  1. Get the real Falcom-LZ decompressor. Best: user enables network in Claude settings so
+     Claude can `git clone https://github.com/the-database/EDDecompiler` and search the repo +
+     pip. Alternative: user uploads a newer EDDecompiler ZIP, or any open-source ED6/Kiseki
+     tool containing the decompressor (e.g. SoraVoiceScripts repo tools, Ouroboros ed6 tools).
+     Fallback: reverse-engineer from the test vectors above (hard).
+  2. With it: decompress PC T_*._DT (English) and PSP .mc1 .bin; verify output lengths.
+  3. Parse + align the text tables first (easy win), then scenes.
+
+
+================================================================================
+12. HANDOFF #3 - DECOMPRESSION SOLVED, PIPELINE PROVEN (read this first)
+================================================================================
+USER CONFIRMED real GOG file sizes: ED6_DT21.dat = 1,803,012 bytes, ED6_DT22.dat = 546,814 bytes -> they are the real,
+complete files (same as uploaded). DT21 has 1224 directory slots but only 430 are used (rest empty) -> NOT truncated.
+DT21 = all 430 3rd scenario scripts (C0301._SN, A0028._SN, E0110._SN ... same names as PSP c0301, a0028, e0110).
+DT22 = 72 text tables (T_*._DT). The other ED6_DT*.dat are NOT needed for text.
+
+12.1 THE COMPRESSION (Falcom "bzip", ed6 framing) - SOLVED, tools/falcom_lz.py (Python port of
+     github.com/Aureole-Suite/falcompress, src/bzip/decompress.rs + ed6.rs). Verified:
+     - PC: all 430 DT21 + 72 DT22 entries decompress, frames end exactly at entry end.
+     - PSP: every script/table/.vag entry in the samples decompresses to exactly the stored unpacked_size.
+     Framing: repeated [u16 chunk_len incl itself][chunk][u8 more_flag(0=last)]; chunk first byte 0 = mode2 (bit stream,
+     16-bit LSB-first flag words), else mode1 (byte tokens).  PSP entries have an extra 12-byte header
+     [u32 in][u32 out][u32 mode] and carry an extra tiny trailer chunk -> decode until out bytes reached (psp_entry()).
+     PSP entries with unpacked_size==0 (.itp/.itc/.it3 in .mc2/.mcc/.mcp etc.) are a DIFFERENT format (C77 itp/it3);
+     not needed for text, saved raw as NAME.raw.  (notes/*_FAILED.py are obsolete.)
+
+12.2 TEXT TABLES (the easy win) - PSP data_3rd/text/t_*._dt  vs  PC ED6_DT22 T_*._DT (decompressed, in
+     orig/pc_gog_extracted/DT22/):  SAME structure (u16 offset table + records), entry counts match 1:1 for almost all:
+       t_item 783/783, t_item2 651/651, t_ittxt 783/783, t_ittxt2 651/651, t_magic 405/405, t_quest 67/67, t_town 225/225,
+       t_name 116/116, t_book01-16 10/10 each, t_cook2 100/100, t_quiz01-04 32/32, t_shop 52/52, t_btrev 50/50,
+       t_btset1 3331/3331, t_fish 5/5, t_chain 4/4, t_crfget 20/20, t_title 4/4, t_mg0500 3/3.
+     Byte-IDENTICAL PC==PSP (numeric/no text): t_item, t_item2, t_quartz, t_orb, t_world, t_status, t_bgmtbl, t_dropit,
+       t_magqrt, t_sltget, t_btset2, t_mmt, t_book00.   Only mismatch: t_memo 93 (PSP) vs 71 (PC) -> PSP has extra entries.
+     PSP-only (no PC file): t_bmap, t_chrpos, t_kage, t_msas, t_world2, psele.txt.  PC-only: T_SUGO*, T_SUEV*, T_SUENAN.
+     => Align by FILE NAME + ENTRY INDEX, copy English record text into the PSP record (keeping PSP binary fields).
+     Strings inside records are NUL-terminated, PSP = Shift-JIS, PC = ASCII; control codes like #xxxx, \x01 \x02 occur.
+     Watch: t_quest/t_town etc. are NESTED (record = header + inner u16 offsets + strings) - parse inner offsets too.
+
+12.3 SCENE SCRIPTS - the SAME decompiler handles PC English AND PSP Japanese:
+     third_party/patched/ = EDDecompiler (the-database fork, Decompiler/ only) + PyLibs, patched for Python 3.13
+     (collections.abc). Needs: pip install xmltodict aiohttp rsa hexdump. Needs a "game folder" of ED6_DT*.dir name
+     tables -> tools/make_fakegp.py builds a fake one (real DT21/DT22 .dir used). Run:
+         python tools/psp_mc.py --scripts <folder of .mc1> out_psp      (writes C0301._SN ...)
+         tools/decompile_all.sh out_psp                                 (writes C0301.py next to each)
+     Use ED63RDScenarioScript.py (PC 3rd), NOT the Evo script, for BOTH. Always --cp=932.  Pipe stdin from /dev/null
+     (script calls getch on error).  Run one process per file (a crash otherwise aborts the batch).
+     Result: all 430 PC scenes decompiled with 0 errors (orig/pc_gog_extracted/DT21_decompiled/*.py; ~3.5 min).
+     PSP C0301 decompiles too, same structure as PC C0301 (6 ChrTalk in each, same function layout, same OP calls).
+     Dialogue = ChrTalk(chr, "text\x01line2\x02") / AnonymousTalk / NpcTalk / Menu(...) / etc.  \x01 = line break,
+     \x02 = end of message (wait for key), #nnnF = face, #nnnP = portrait/pose, #nnnC colour, #nW wait.
+     PSP text uses extra codes (e.g. "#6P") and splits lines differently from PC; English line counts differ.
+     NOTE: ChrTalk counts/layout differ a little where PSP changed scenes (PSP JP != PC JP, per TCRF) -> align per
+     scene by function index + order of talk calls, fuzzy-fallback on speaker chr id; unmatched -> hand queue.
+
+12.4 REPACKING (not started): .mc1 must be rebuilt with the modified .bin. Options: (a) write the compressor (falcompress
+     has bzip compress mode2 in src/bzip/compress*; port or simply STORE using mode-1 raw tokens "00xnnnnn" literal runs -
+     valid mode1 stream, no compression needed; needs engine test), (b) edit then recompile .py -> ._SN with the
+     decompiler's compile mode (python C0301.py --gp=... outdir) which rewrites all offsets so English may be longer.
+     Then replace the .mc1 in a COPY of the ISO (sector layout: data.lst index in USRDIR may hold offsets/sizes! - examine
+     PSP_GAME/USRDIR/data.lst (198 KB, kit1/data.lst) before resizing any file; keep size <= original sector span at first).
+     TEST FIRST: change ONE line of C0301 -> user runs in PPSSPP.
+
+12.5 STILL UNKNOWN: whether data.lst must be updated when file size changes; font has Latin glyphs?; hard-coded EBOOT text.
+
+12.6 PROGRESS: 0 lines translated (porting approach: most lines come from PC English, not hand translation).
+     Done in chat #3: decompressor, PC extract (all), PC decompile (all 430), text-table structure comparison.
+
+13. WHAT TO DO NEXT (in order)  <- supersedes section 11
+  1. USER STEP (one instruction):  python extract_scripts.py Trails3rd.iso   -> upload scripts1.zip (~18 MB, 384 .mc1 files).
+     (tools/extract_scripts.py is in the zip; the user copies it next to their ISO.)  Also ask later for data.lst if
+     not in kit1 (it IS in orig/psp/kit1/data.lst).
+  2. psp_mc.py --scripts -> decompile all 384 PSP scenes; build tools/align_scripts.py (PC .py vs PSP .py: pair talk calls
+     per scene) and tools/align_tables.py (table-by-table index mapping); write queue/ of unmatched JP lines.
+  3. Prove the repack on ONE table (t_item names via t_ittxt) and ONE scene; give the user a tiny test patch for PPSSPP.
+  4. Check font (system/pspfont.dat) for Latin + width; then bulk port; then hand-translate unmatched in batches.
+
+9b. USER COMMAND CHEAT SHEET (update): 
+  python extract_scripts.py Trails3rd.iso        (creates scripts1.zip next to it)
+
+NOTE (zip slimming): third_party/EDDecompiler-master.zip + PyLibs-master.zip were REMOVED (replaced by third_party/patched/).
+orig/pc_gog_extracted/DT21_SN (decompressed PC ._SN) is not stored: regenerate with
+  python tools/pc_extract.py orig/pc_gog/ED6_DT21 orig/pc_gog_extracted/DT21_SN
+
+
+14. HANDOFF #4 UPDATE (chat #3, second message; user wants max ~3 MIN of work per batch - keep batches short!)
+- User uploaded scripts1.zip (384 .mc1). Extracted with tools/psp_mc.py --scripts -> orig/psp/scripts_SN/*._SN
+  (395 unique PSP scene scripts, decompressed, JP, ready for the decompiler). 384 archives -> 395 names because some .mc1
+  hold extra .bin; SUB000 is shared by ~85 archives (identical name; stored once). PC has 430 scenes (some PC-only
+  like T0001_1..5, U7000_1..5, M7408_1).
+- Sandbox has only 2 CPU cores: decompiling all 395 takes ~7 min (0.5-1 s CPU per file). NOT done yet.
+  NEXT BATCH: run  tools/decompile_all.sh orig/psp/scripts_SN  IN THE BACKGROUND (nohup ... &) in chunks of ~100 files
+  (copy chunk to a temp folder), poll with short sleeps; each chunk ~1.5 min. Or skip full decompile: decompile only scenes
+  needed first (story scenes: C*, E*, T*, M*), then build tools/align_scripts.py.
+- Do this next (in order, each < 3 min): (1) decompile PSP chunk 1-4, (2) align_tables.py for t_item/ittxt/magic/quest/town,
+  (3) one-line test patch.
+
+
+================================================================================
+15. HANDOFF #5 (chat #4)  <- NEWEST. Test patch 1 built; scenes decompiled.
+================================================================================
+15.1 SANDBOX: PyPI is BLOCKED this time (pip fails). Fix already in zip: tools/stubs/sitecustomize.py stubs aiohttp/rsa/hexdump/pyasn1
+     and tools/decompile_all.sh puts it on PYTHONPATH. decompile_all.sh needs an ABSOLUTE path:  sh tools/decompile_all.sh $PWD/orig/psp/scripts_SN
+     (it cd's; relative path silently does nothing). Uses -P 2 (2 cores): 395 files ~3 min.
+15.2 PSP SCENES: 340 of 395 decompiled to orig/psp/scripts_SN/*.py (JP). 55 FAIL with KeyError: unknown opcode (240-252) in the PC-3rd
+     op table = PSP-only instructions. List: notes/psp_decompile_failures.txt (C1500 C3100 E0700 E0810 ... M*, P*, T*, U7xxx ...). The Evo
+     script (ED63RDEvoScenarioScript.py) also failed on C1500. TODO: add the missing opcodes to Decompiler/Instruction/ScenaOpTableED63RD.py
+     (look at the bytes after op 0xF8 in C1500._SN to learn arg layout; compare with ScenaOpTableED63RDEvo.py) -- or skip these scenes at first.
+15.3 SCENE ALIGNMENT STATS: PSP .py vs PC orig/pc_gog_extracted/DT21_decompiled/*.py: 340 scenes compared, 303 have the SAME count of
+     ChrTalk/AnonymousTalk/NpcTalk calls (=> position-wise pairing works for ~89%). PSP 14118 talk calls vs PC 14543. Mismatch scenes
+     e.g. C1400 49/41, C3101 77/119, C3110 39/88, C5400 25/125, C5401 8/30, C5408 12/37, C5416 56/70 (PSP cut/changed events; those
+     need fuzzy/hand work). NEXT: write tools/align_scripts.py (per scene: list talk calls in order, pair by index when counts equal and
+     speaker chr ids match; else difflib on speaker sequence; output queue/ for unmatched JP lines). Then a script rewriter that
+     replaces the string literal inside the PSP .py and recompiles (.py -> ._SN via the decompiler's compile mode; see 12.4) and a
+     .mc1 repacker (store mode-1 literal runs = no compressor needed; engine untested).
+15.4 TEXT TABLES DONE (tools/tbl.py, tbl_verify.py, tbl_test.py): PSP table rebuilt with PC English strings; header pointer slots found by
+     comparing PSP vs PC header u16 that point INTO the record's own string area (or any string, for pure pointer-table records like
+     t_town rec0); text for a PSP string = PC string at the same slot; all slots rewritten, leading offset table rewritten. Verified
+     (every PC slot resolves to the PC string in the new file, 0 bad): t_ittxt t_ittxt2 t_magic t_quest t_town t_quiz01-04 t_cook2 t_title
+     t_name t_memo t_book01-16 (books are plain string records, ported by index). NOT yet ported / unverified: t_fish (5 bad), t_chain
+     (partial), t_mg0500 (3071 strings kept JP), t_btrev, t_shop (shop names), t_btset1 (parser error), t_face/t_se (no PC counterpart
+     parse), t_bmap/t_chrpos/t_kage/t_msas/t_world2/psele.txt (PSP only -> hand-translate), t_memo extra 22 PSP-only entries stay JP,
+     t_name 47 PSP-only strings stay JP, t_quest 4 strings stay JP.
+15.5 DATA.LST SOLVED: PSP_GAME/USRDIR/data.lst = header (u32 size, then ext list 'lst\0itp\0_dt\0...') + 16-byte entries:
+     name[8] (NUL padded, no extension) | u32 size | u32 (sector(24 bit) | ext_index<<24). Sector = the file's ISO LBA (matches filelist).
+     So the engine reads by sector => a bigger file cannot grow in place. build_patch.py APPENDS new files at the end of a COPY of the ISO,
+     patches data.lst entry (size+sector), the ISO9660 dir record (lba/size both-endian) and PVD volume size (offset 80). Tested on a
+     synthetic ISO only (tools in out/test_kit1 reproduce it); REAL ISO + PPSSPP NOT TESTED YET.
+15.6 LEGAL/DELIVERY MODEL: build_patch.py runs on the user's PC and reads THEIR GOG ED6_DT22.dat/.dir -> no XSEED text is shipped.
+15.7 TEST KIT 1 = out/test_kit1.zip (build_patch.py tbl.py tbl_verify.py falcom_lz.py ed6_unpack.py README.txt). User command:
+       python build_patch.py Trails3rd.iso "<GOG folder>\ED6_DT22"          -> Trails3rd_EN.iso
+       (fallback if crash: add  --only t_ittxt )
+     WAITING FOR USER RESULT: boots? text readable (ASCII glyphs)? width/overflow in item list? crash?
+15.8 OPEN: font Latin check (pspfont.dat / sfont.itp) -- first emulator report will answer ASCII rendering; hard-coded EBOOT text;
+     image-based menus (.itp); the 55 undecodable scenes; mc1 repack; line-wrapping validator for English dialogue.
+15.9 NEXT BATCH ORDER: (1) read user's test result; fix. (2) align_scripts.py + queue/. (3) fix opcodes for 55 scenes. (4) mc1 repack +
+     one-scene test. (5) remaining tables (t_fish, t_chain, t_mg0500, t_shop, t_btrev, PSP-only tables by hand).
+
+15.10 RESULT OF TEST KIT 1 (user ran it, chat #4): WORKS on the real ISO. User folder layout:
+      <user folder>\Kiseki 3rd\test_kit1\  (has the .py files AND a copy of Trails3rd.iso)
+      GOG files: ...\Kiseki 3rd\TrailsGOG\TrailsGOGFolder\ED6_DT22.dat/.dir
+      WORKING COMMAND (run inside test_kit1, ISO copy is in that folder):
+        python build_patch.py "Trails3rd.iso" "..\TrailsGOG\TrailsGOGFolder\ED6_DT22"     -> test_kit1\Trails3rd_EN.iso
+      (".." path to the ISO failed because the user's real ISO was only inside test_kit1.)
+      Output: GOG tables found 72; 28 tables patched (ittxt, ittxt2, magic, quest, town, quiz01-04, cook2, title, name, book01-16);
+      t_memo skipped (verify bug "list index out of range" -> FIXED in tbl_verify.py, in zip as test_kit1b).
+      ISO built OK and PPSSPP v1.20.4 boots it (game id ULJM05353). NOT YET CONFIRMED by user: English visible in Items/Orbment/Quest
+      menus (user's save is at the very start, little to see yet) and no crash in those menus. Option menu etc. are IMAGES/hardcoded (JP).
+      NEXT: ask the user to open Items tab / Orbment / Quest list / notebook and report; then continue with align_scripts.py.
+
+================================================================================
+16. HANDOFF #5b (chat #4, later)  SCENE DIALOGUE PIPELINE BUILT (untested in game)
+================================================================================
+16.1 Compile works: decompiled PSP .py -> ._SN is BYTE-IDENTICAL to the original (C0301 checked). Needed fix: PyLibs wintypes ULONG/LONG
+     were 64-bit on Linux (ctypes.c_ulong) -> patched to c_uint32/c_int32 in third_party/patched/PyLibs-master/ouroboros/otypes/wintypes.py.
+     tools/compile_all.sh ABS_PY_DIR ABS_OUT   (needs /tmp/fakegp; ~2.5 min for 340).
+16.2 tools/align_scripts.py PSP_PY PC_PY OUT [--wrap 50] [--rows 3]: pairs ChrTalk/NpcTalk/AnonymousTalk calls by difflib on (kind, chr id);
+     11251 of 11551 PSP talk calls paired (97%). New text = PSP leading codes per page (#290F#6P ...) + PC English body re-wrapped (width 50,
+     3 rows/page, extra rows -> new page "\x02\x03"). NpcTalk names from PC. Unpaired stay JP (OUT/_report.txt). PSP line widths: 99% <= 40
+     cols, max 66; PC English max 89 -> wrapping needed; real PSP box width UNKNOWN -> tune --wrap after user feedback.
+     NOT handled yet: Menu()/choice text, other string ops (AddText etc), names in other calls, the 55 undecodable scenes.
+16.3 Repack: falcom_lz.psp_store() writes UNCOMPRESSED mode-1 literal frames + the original 8-byte end frame (byte-identical trailer);
+     tools/mcpack.py replace_entry(mc1, 'c0301.bin', data) rebuilds the .mc1 (entries packed tight after 16+32n header). Roundtrip verified.
+     build_patch.py now: --scenes DIR (default ./scenes), --no-scenes, --scene-only c0301,c0302 ; appends rebuilt mc1 to ISO, patches
+     data.lst + ISO dir record. Tested on synthetic ISO only.
+16.4 TEST KIT 3 = out/test_kit3.zip (tables + 340 compiled English ._SN in scenes/ + RUN_ME.bat, RUN_ME_tables_only.bat). NOTE: scenes/ files
+     contain GOG English text (user's own copy, test only). For public release build user-side instead (decompile both sides on user PC).
+     WAITING FOR: does the engine accept stored (uncompressed) mc1 entries? text width/overflow? face codes ok?
+
+
+================================================================================
+17. HANDOFF #6 (chat #5)  <- NEWEST. Kit 3 black-screen after intro ship scene: 2 bugs found + fixed in KIT 4 (UNTESTED)
+================================================================================
+17.1 SYMPTOM (user, PPSSPP 1.20.4): with test_kit3 the game plays the intro ship scene then goes BLACK. (Tables-only kit worked.)
+17.2 BUG A (main suspect): 106 of 340 scenes recompiled 2 bytes SHORT vs the PSP original. PSP files always end the chip table and the
+     chip-pattern table with a 0xFF byte even when empty; the decompiler prints AddCharChip()/AddCharChipPat() only if non-empty, so the
+     compiler wrote nothing. FIX: third_party/patched/Decompiler/ED63RDScenaFile.py now has _ensure_chips() (emits empty AddCharChip/
+     AddCharChipPat before Decl*/ScpFunction). Roundtrip of UNMODIFIED PSP .py -> ._SN is now byte-identical for 330/340. Remaining 10
+     (C4203 E1110 M4110 M4111 M4112 M5400 R2201 U4168 U4203 U5110; 3-28 bytes) differ by a redundant 3-byte jump op ("03 xx xx" repeated
+     in original); offsets consistent; judged harmless, NOT fixed. TEST METHOD to reuse: compile unmodified .py and cmp with original.
+17.3 BUG B: U7000_1 (63659->69642) and U7002_5 (62652->73342) exceed 65535 after English text; ED6 scene offsets are u16 -> header corrupt
+     (decompiler can't even reopen them). Kit 4 leaves these two JP (not shipped). TODO: ship partial English (revert talk calls until
+     size < ~65000) or shorten text. All other scenes < 65535.
+17.4 tools/stubs/sitecustomize.py now also stubs xmltodict (pip is blocked). compile_all.sh/decompile_all.sh must be started with
+     `setsid nohup sh ... > log 2>&1 < /dev/null &` or they die when the tool call ends. ~3 min for 338 scenes.
+17.5 Pipeline to rebuild kit scenes: python3 tools/align_scripts.py orig/psp/scripts_SN orig/pc_gog_extracted/DT21_decompiled OUTPY --wrap 50 --rows 3 <scene names>
+     then sh tools/compile_all.sh ABS_OUTPY ABS_OUTSN ; copy *._SN into kit/scenes. KIT 4 = out/test_kit4.zip (tables + 338 scenes).
+17.6 START SCENE UNKNOWN: the scene that follows the ship intro was not identified (no T0001 in PSP; PC has T0001_x). Opening M-scenes
+     U7xxx are epilogue ("Gaiden2"), NOT the start. 55 scenes still undecodable (PSP-only opcodes 240-252) stay original/JP - if the
+     start scene is one of them, English there is impossible until opcodes are added.
+17.7 USER REQUEST PENDING: hand-translate a chunk of the opening scene for easier testing. Needs: which scene / a screenshot of JP text
+     after the ship scene; or check out/.../_report.txt unpaired lines. Do this once user reports kit4 result.
+17.8 NEXT: (1) read kit4 result. If still black: run RUN_ME_tables_only.bat / --scene-only to bisect scenes; consider that the engine may
+     reject STORED (uncompressed) mc1 entries -> then port a real compressor (falcompress bzip compress). (2) identify start scene.
+     (3) fix 2 oversize scenes. (4) 55 undecodable scenes opcodes. (5) remaining tables.
+User prefs: FAST, short replies, one instruction at a time, hits message limits - keep batches short.
+
+17.9 RESULT kit5 bisect (user): TEST_A (tables, no memo) OK, TEST_B (tables+memo) OK, TEST_C (scenes, no memo) STUCK ON OPENING LOADING SCREEN
+     => scene packing/content is the cause. Hypothesis: engine only supports mode-2 chunks (all PSP originals have chunk byte0==0); my
+     psp_store used mode-1 literals. KIT 6 = falcom_lz.psp_store now writes mode-2 literal-only chunks (roundtrip OK on 338 scenes,
+     header/trailer layout matches original c0301.bin entry). UNTESTED. If still stuck: next bisect = --scene-only with ONE scene,
+     and a real compressor; also suspect mc1 header/other entries; also try ORIGINAL unmodified bin stored (isolates packing vs content).
+
+17.10 RESULT kit6 (user, screenshots): SCENES NOW LOAD AND SHOW ENGLISH (E1110 airship prologue: Host, Masked Man lines OK, face portraits OK,
+      50-col wrap fits the box). Mode-2 stored packing WORKS in PPSSPP -> black/loading hang SOLVED. Remaining in that scene:
+      (a) speaker names from BuildStringList stayed JP (e.g. 仮面の婦人/仮面の紳士) -> KIT 7 adds tools/port_names.py (165 scenes; PSP JP entry
+          -> PC ASCII name when lists same length); (b) narration box ("かの《百日戦役》の折に...", intro caption) is NOT a ChrTalk/NpcTalk/
+          AnonymousTalk call -> still JP; find which op/string table holds it (not found by grep in E1110.py; maybe OP_xx text arg or
+          string table index) ; (c) other non-talk text (Menu choices etc.) still JP. Hand-translation queue not needed for E1110
+          dialogue (343/343 paired with PC). 6 scenes (U7000_2,_3,_5 U7001_5 U7002_4 SUB000) have no own .mc1 -> skipped by build_patch.
+      Pipeline now: align_scripts.py -> port_names.py -> compile_all.sh -> copy into kit/scenes.  KIT 7 = out/test_kit7.zip.
+
+
+================================================================================
+18. HANDOFF #7 (chat #6)  <- NEWEST.  User rule: a batch session must take <= 8-9 min, then deliver handoff + test kit.
+================================================================================
+18.1 KIT 7 RESULT (user screenshots, PPSSPP 1.20.4): English dialogue + item menu (Tear Balm etc.) WORK. Speaker names in ChrTalk boxes
+     partly English ("Host", "Masked Man"), BUT: (a) intro caption box (SetChrName("仮面の紳士") + AnonymousTalk with scpstr(COLOR) tuple, text
+     "...Hermann Conrad / Hundred Days War...") stayed JP; (b) "仮面の婦人" speaker label stayed JP on an English line; (c) menu header
+     "道具" and other UI headers are IMAGES (expected).
+18.2 ROOT CAUSE of (a): align_scripts.calls() silently SKIPPED every talk call whose text tuple contains scpstr(...) elements (literal_eval
+     fails) - on BOTH sides, so pairing stayed consistent and nothing showed in _report.  Same bug left treasure-chest messages (item name
+     inserted via scpstr(SCPSTR_CODE_ITEM, id)) in JP in all scenes.
+     FIX (tools/align_scripts.py, done): parse_elems() tokenizes the arg into strings + scpstr tokens; calls pair on key (kind, chr, number of
+     non-colour tokens); emit_tokens() replaces only the text segments between non-colour tokens (items/etc.), keeps PSP's colour/item tokens;
+     PC \x07.. codes dropped in segments; SetChrName("...") directly before an AnonymousTalk is ported from the paired PC call (JP -> ASCII).
+     E1110: 363/363 paired (was 343); only the 15 Menu() choice strings (book chooser) remain JP in that scene.
+18.3 STILL TODO (priority order):
+     1. Menu(...) choice strings ("【やめる】" etc.) are not touched by align_scripts - add Menu pairing (PC "[Cancel]"-style) .
+     2. "仮面の婦人"-style names: port_names.py only ports BuildStringList when PSP/PC lists have the SAME length. If lists differ (E1110?),
+        add fallback (map by chr id used in paired ChrTalk calls: PSP list idx -> PC name of the paired call's speaker).
+     3. 55 undecodable scenes (PSP-only opcodes 240-252, notes/psp_decompile_failures.txt) + U7000_1/U7002_5 (>64 KB) stay JP.
+     4. Tables not yet done: t_fish, t_chain, t_mg0500, t_btrev, t_shop, t_btset1, PSP-only tables (hand translation).
+     5. Image-based menus (道具 etc.) = textures (.itp), not text.
+18.4 PIPELINE (unchanged, all in tools/): align_scripts.py -> port_names.py -> compile_all.sh (setsid nohup, ~3 min) -> copy ._SN into kit/scenes.
+     KIT 8 = out/test_kit8.zip.  Run: python tools/align_scripts.py orig/psp/scripts_SN orig/pc_gog_extracted/DT21_decompiled OUT --wrap 50 --rows 3
+     NOTE sandbox shell has no `time` builtin; python3 only.
+
+18.5 (chat #6, later) USER RESULT kit8: opening scene + a LOT of NPCs in the opening area show English names and text (OK). 
+     COVERAGE: 340 decoded scenes, 14118 PSP talk calls, 13750 paired with PC English (97.4%); 338 scenes shipped (U7000_1, U7002_5 JP);
+     55 scenes undecodable (unknown call count) stay JP. Hand-translation not needed so far.
+     KIT 9 (out/test_kit9.zip): align_scripts.py now ports Menu(...) choices (port_menus; comments inside tuples handled). UNTESTED.
+     Remaining JP string literals in aligned scenes: ~527 (mostly BuildStringList names/files, other ops) - next: list them by op type.
+
+18.6 (chat #6, batch 3) THE 55 "UNDECODABLE" SCENES ARE NOW DECODED. Fix: PSP-only opcodes E8,E9,ED,F0-F3,F5,F8-FE copied from ScenaOpTableED63RDEvo.py
+     into third_party/patched/Decompiler/Instruction/ScenaOpTableED63RD.py (names + inst()). All 55 decompile (0 errors), their .py are now in
+     orig/psp/scripts_SN. 48/55 roundtrip byte-identical; 7 (E1000 -18, E1100, M7001, M7002, M7202, P7000, U7003) are 3-18 bytes short
+     (redundant jump op, as the earlier 10 scenes) - untested in game.
+     Aligned: ~97% of calls paired except T2102 48/105, C1500 98/115, U7003_5 241/338, M7408/T4206/E1000/U7003_4 (PSP has more calls than PC).
+     STILL JP: E1000 (77450 B), M7408 (67565), T4206 (71553) exceed 65535 after English -> TODO: ship partial (revert some talk calls) or
+     shorten; U7000_1, U7002_5 same issue. KIT 10 = out/test_kit10.zip (390 scenes). UNTESTED.
+     Next: (1) user kit10 result; (2) oversize scenes; (3) unpaired calls (hand-translate queue from _report); (4) other JP strings (~527).
+
+18.7 (chat #6, batch 4) OVERSIZE SCENES: new tools/shrink_scene.py PSP_PY ALIGNED_PY OUT_PY CUT_BYTES reverts the talk calls with the largest English growth
+     back to JP until the compiled scene fits (<65535). Done for U7000_1 (64015 B, 148/456 calls left JP), U7002_5 (63754, 172/493), E1000 (61012, 104/312 -
+     over-reverted, could keep ~40 more English), M7408 (62370, 126/446), T4206 (62052, 143/453). All 390+5 scenes now fit. KIT 11 = out/test_kit11.zip (395 scenes).
+     BETTER FIX LATER: shorten English (wrap/abbrev) or split into extra .mc scenes rather than reverting; hand-translate / restore reverted lines.
+     Compiled-size estimate in shrink_scene overestimates growth by ~1.0-1.5x (escapes counted as 4 chars) - tune the cut multiplier per scene.
+
+18.8 KIT 12 (out/test_kit12.zip): shrink retuned -> E1000 65202 B (32/312 calls JP), M7408 64685 (40/446 JP); U7000_1, U7002_5, T4206 unchanged from kit 11
+     (~30% JP). E1000 is only ~330 B under the 65535 limit - if it misbehaves revert a few more calls. Kit 11/12 untested.
+
+
+================================================================================
+19. HANDOFF #15 (chat #7)  <- NEWEST.  SESSION RULE: <= 8-9 min per batch; handoff delivered as 2 parts (A + B) because it nears 30 MB.
+================================================================================
+19.1 ALL TEST RESULTS SO FAR (user, PPSSPP 1.20.4 on Windows, real Trails3rd.iso):
+     kit1  tables: works on real ISO.            kit3: black screen after intro ship scene (bug A/B in 17.2/17.3).
+     kit4-5 bisect: TEST_A tables OK, TEST_B tables+t_memo OK, TEST_C scenes -> stuck on opening loading screen.
+     kit6  mode-2 stored (uncompressed) packing: scenes load + English (E1110 prologue) -> FIXED.
+     kit7  English dialogue + item names OK; intro caption + a few speaker labels JP (fixed by scpstr parsing in kit8).
+     kit8  opening scene + many NPCs in opening area: English names + text OK.
+     kit9-12: NEVER REPORTED (kit9 Menu() choices; kit10 +55 formerly undecodable scenes; kit11-12 oversize scenes partially JP). If kit13 boots, they work.
+     Known visual limits: UI headers (e.g. item menu title) are images (.itp) -> still JP; EBOOT strings encrypted -> still JP.
+19.2 KIT 13 (out/test_kit13.zip, UNTESTED) = kit12 + t_chain, t_mg0500 added to DEFAULT tables + re-shrunk oversize scenes:
+     T4206 64818 B, U7000_1 65276 B, U7002_5 64542 B (limit 65535).  E1000 65202 / M7408 64685 unchanged.
+     FINDING: in T4206/U7000_1/U7002_5 the PSP has MORE talk calls than PC (T4206 453 vs 366 paired, U7000_1 456/395, U7002_5 493/333) ->
+     87 / 61 / 160 calls are PSP-only and stay JP no matter what (need hand translation = queue). Remainder JP is only ~56/45/45 reverted calls
+     (size limit). Old shrink over-reverted (cut ~1.0-1.5x too much). Calibrated: actual saving = est x 1.22 (T4206,U7002_5) / 1.5 (U7000_1).
+     Tool: tools/shrink_iter.sh SCENE CUTBYTES (needs aligned .py in al/ and compiled output; see out/oversize_py/ for the 3 final .py + *.aligned_full.py).
+     Pipeline for one scene: align_scripts.py ... SCENE -> shrink_scene.py -> port_names.py (arg2 = PC_PY dir, arg3 = dir of shrunk .py; arg1 unused) -> compile_all.sh.
+19.3 TABLES: tbl_test on remaining: t_chain, t_mg0500 verify OK (added). t_fish rebuilds but verify has 5 bad pointers -> NOT added (investigate).
+     t_btrev / t_shop / t_btset1 / t_crfget: rebuild crashes or verify fails (IndexError / mismatched record layout) -> need per-table fix (PC 4656 B vs PSP 4752 etc).
+     t_memo already in DEFAULT. PSP-only tables (t_bmap, t_chrpos, t_kage, t_msas, t_world2) have no PC English -> hand translation.
+19.4 NEXT (priority): (1) user kit13 result. (2) fix t_shop (shop names), t_btrev, t_btset1 (battle text!), t_fish. (3) hand-translate PSP-only unpaired
+     talk calls (see _report.txt from align_scripts; 87+61+160 in the 3 big scenes + T2102 / C1500 / U7003 / E1000 / M7408 gaps).
+     (4) split big scenes (>64 KB) instead of reverting. (5) remaining ~527 JP string literals (BuildStringList etc.). (6) images/EBOOT text last.
+
+
+================================================================================
+20. HANDOFF #16 (chat #7, batch 1 of "do steps 3,4,5,6 in batches")  <- NEWEST
+================================================================================
+ROADMAP the user approved: 1 test kit | 2 fix what it shows | 3 tables | 4 hand-translate unpaired lines | 5 split >64KB scenes | 6 leftover JP strings | 7 images/EBOOT LATER | 8 full playthrough.
+User: "Do 3,4,5,6 now then in batches! Step 7 later".  Each batch <= 8-9 min, deliver test kit + handoff in 2 parts (A = everything except orig/pc_gog*, B = orig/pc_gog + pc_gog_extracted).
+Kit 13 was never reported yet; kit 14 = kit13 + this batch.  (Kits 9-14 all UNTESTED; see section 19.1 for tested history.)
+20.1 STEP 3 TABLES: t_shop DONE (build_patch DEFAULT; special fix: last record's 2 end-of-file pointers rewritten to new len / len-2; generic verify skipped).
+     t_btrev + t_btset1 have NO text (numbers / 'battle','BTTEST' filenames) -> nothing to do.  t_fish: still NOT added (rec 0 pointer 3942 not rewritten; 5 false-positive verify hits are harmless data).
+     t_crfget identical-ish/no text.  PSP-only tables t_bmap t_chrpos t_kage t_msas t_world2: hand translation still TODO (check contents; may be filenames/numbers only).
+20.2 STEP 4 HAND TRANSLATION PIPELINE (new tools):
+     tools/extract_queue.py PSP_PY PC_PY queue/unpaired.tsv -> 996 PSP talk calls with no PC pair (954 plain, 42 with scpstr tokens = skipped by apply).
+     tools/make_unique.py -> queue/unique.tsv (id, scene, speaker, JP; 855 unique ids; IDs stable, appended only) + queue/unique_map.tsv (scene, call idx, id).
+     queue/en_001.tsv = English for ids 1-170 (format: id<TAB>English, pages separated by ' ||| ').  Next files: en_002.tsv for ids 171-..., etc.
+     tools/apply_hand.py ALIGNED_PY_DIR: applies ALL queue/en_*.tsv to aligned .py (wrap 50, rows 3).  Full per-scene pipeline:
+        align_scripts.py ... SCENES -> port_names.py x PC_PY DIR -> apply_hand.py DIR -> [shrink_scene.py if >65535] -> compile_all.sh -> copy ._SN into kit/scenes
+     27 scenes rebuilt this batch are in out/hand_py/*.py (aligned+hand) and shipped in kit 14.  Order of ids: early-game scenes first, epilogue/big scenes last
+     (U7002_5 160, U7003_4 116, E1000 108, M7408 106, U7003_5 97, T4206 87, U7000_1 61 + small ones).
+     STATUS: 170 / 855 unique ids translated (162 calls applied; ids 171+ untouched).
+     Style used: XSEED names (Estelle, Joshua, Kloe, Tita, Agate, Kevin, Ries, Campanella, Bleublanc, Loewe, Lucciola, Renne, Marie, Pauly, Gilbert); straight quotes; ASCII only.
+20.3 STEP 5 (split >64KB scenes: E1000, M7408, T4206, U7000_1, U7002_5): NOT STARTED. Idea: scene offsets are u16; alternatives = shorten English / move part of the
+     dialogue functions into an extra scene file / (research) check whether the engine really needs u16 offsets for the string data.
+20.4 STEP 6 (leftover JP strings ~527: BuildStringList names where PSP/PC lists differ in length, other ops): NOT STARTED.
+20.5 NEXT BATCH: user kit14 result -> fix; then translate ids 171-~450 into queue/en_002.tsv, rebuild affected scenes, kit 15.
+
+
+================================================================================
+21. HANDOFF #17 (chat #7, batch 2)  <- NEWEST
+================================================================================
+21.1 HAND TRANSLATION STATUS: translated = ids 1-330, 373-380, 539-547, 680-855 (files queue/en_001..003.tsv).  UNTRANSLATED = ids 331-372, 381-538, 548-679 =
+     rest of E1000 (book texts), M7408, U7002_5 (160), U7000_1 (61).  Translated E1000 ids (270-330) and T4206 ids are NOT all shipped: E1000/M7408/U7002_5/U7000_1 were not
+     rebuilt (kit has kit12/13 versions) because extra English exceeds the 65535-byte scene limit -> STEP 5 is the blocker for ~450 lines.  T4206 rebuilt + shrunk.
+21.2 KIT 15 (out/test_kit15.zip, UNTESTED): 40 scenes rebuilt with hand lines (475 calls); T4206 re-shrunk (64646 B, 75/453 calls JP).
+     Full pipeline for these: align_scripts -> port_names -> apply_hand -> (shrink_scene if >65535) -> compile_all -> scenes/.  Source .py in out/hand_py/.
+21.3 STEP 5 ANALYSIS: u16 offsets are an engine limit (Falcom itself split epilogue into U7000_1.._5 files), real fix = move some talk functions to a NEW scene file
+     (needs scene-load op/mc1 archive/index entry) - not attempted.  Practical alternative: keep reverting (maximizes English lines) + prefer reverting lines the player
+     reads least (hand lines are longest -> reverted first).  Idea to test next: do U7002_5/U7000_1 etc. still have duplicated lines (#6P variants) that could share a function.
+21.4 NEXT: kit15 result; translate rest of E1000/M7408 etc only if size solution found; STEP 6 leftover JP strings (BuildStringList mismatches, Menu, other ops); t_fish.
+
+
+================================================================================
+22. HANDOFF #18 (chat #7, batch 3)  <- NEWEST
+================================================================================
+22.1 STEP 6 (leftover JP strings) mostly DONE: leftover scan of aligned scenes showed: 885 JP lines in ChrTalk (almost all in the 3 big epilogue scenes U7002_5/M7408/U7000_1 =
+     reverted/untranslated), 762 in tokened talk calls (E1000 books 491), 168 Menu, 39 NpcTalk, 36 OP_CC, 30 SetChrName.
+     NEW tools: tools/apply_misc.py DIR (Menu/SetChrName/OP_CC/NpcTalk strings from queue/misc.tsv + queue/misc_en.tsv, 109 distinct strings, 273 replacements);
+     apply_hand.py now also handles calls whose only tokens are COLOUR tokens (drops the colour, plain English) -> exhibit/book texts (T4135 U4135 U4162 E1000 books...).
+     Pipeline now: align_scripts -> port_names -> apply_hand -> apply_misc -> compile_all (all 395 ~2.5 min) -> shrink_scene for the 5 big ones -> recompile -> kit scenes/.
+     Shrink cuts used (shrink_scene.py PSP_PY ALIGNED_PY OUT_PY CUT): E1000 15600 (64310 B, 37/312 JP), M7408 2000 (65055), T4206 5400 (64646), U7000_1 3430 (65334), U7002_5 6680 (64617).
+     Sources of all final scene .py: out/hand_py/ (395 files, aligned + hand + misc, big 5 already shrunk).
+22.2 KIT 16 = out/test_kit16.zip (UNTESTED; kits 9-16 all untested).
+22.3 REMAINING: (a) ids 331-372, 381-538, 548-679 hand translation (rest of E1000 books, M7408 238 lines, U7002_5, U7000_1) - they only fit if size is solved (STEP 5 not solved; shrink
+     keeps ~65 KB). (b) tokened talk calls with ITEM tokens (42 calls, 762 lines incl colour) - not hand-translated. (c) t_fish. (d) BuildStringList names where lists differ.
+     (e) images/EBOOT (step 7, later).
+
+
+================================================================================
+23. HANDOFF #19 (chat #8)  <- NEWEST.  FIRST REAL TEST OF KIT 16 (old JP saves) = EVERY SAVE HAS SOME ISSUE
+================================================================================
+23.1 USER SCREENSHOTS (PPSSPP 1.20.4), kit16 ISO, loading old JP saves (names in brackets = screenshot file names):
+  save1  (clear data, NG+ carry-over menu): loads; the whole menu (ミラ・セピス/アイテム/装備品/手帳/ステータス, 引き継ぐ, 決定, "ミラとセピスを引き継ぎます") is JP.
+         Text is NOT in any scene .py nor in data_3rd/text tables (kit1) -> EBOOT/image/other data file (step 7).
+  save2  (final chapter, Phantom Castle room): LOADS + WORKS. Items menu: English item names/descriptions OK. Still JP: item category tabs (武器 防具 道具 クォーツ イベント 食材 書物),
+         party names in the left panel (リース アネラス リシャール レン), "Mira/PlayTime" ok. Menu tab images (STATUS EQUIP ORBMENT ITEMS...) are already English.
+  save6  (final chapter, Sainte-Croix forest 61:41): loads; battle works (save6InGame) but battle command wheel (攻撃 移動 アーツ クラフト 道具 退却) is JP = image/EBOOT.
+  save7  (final chapter start, 幻影城・玄関, 63:33, 4 chars): after Enter -> BLACK screen, HUD (4 portraits) + compass but minimap EMPTY (map not loaded at all). No crash.
+  save5  (user's own NEW save made in the patched game at chapter-7 end via [Save], title shows English "Chapter 7 ~The Distant Flames~"): after Enter -> BLACK, 2 portraits
+         (Ries, Kevin) + minimap shows a blue map shape.
+  save33 / save4 (same JP save = end of chapter 7, 52:51): chapter-end screen shows English "[Save] [Next Chapter]" (title banner 第七話/遠い炎群 is an image). Pressing Next Chapter ->
+         (save4) INFINITE "Now Loading..." or (save33) pressing Exit -> GAME CRASH "Invalid Memory Access, Access: Unknown at 00000000 (sz 0), PC 08a2e1c0
+         mov [rbx+rsi], r8b, thread user_main" = byte copy loop writing through a NULL base pointer (an allocation/read returned NULL).
+  oneOftheSaves / oneOftheSavesResult (save not named): Kevin dialogue works in English ("The place where Ries, Rufina, and I grew up together." / "Yeah. I can barely bring myself to
+         accept it's not the real thing."); in one screenshot the background is black behind the dialogue (could be fade-in) - second shows the field fine.
+23.2 ANALYSIS (static, sandbox has no ISO): (a) every shipped scene re-decompiles with 0 errors (395/395 reopened -> header/tables structurally fine). (b) Failing cases are all
+     chapter-end -> final-chapter-start transitions / the first final-chapter field (幻影城・玄関), i.e. Gaiden2/Gaiden3 map scenes (239 of the 395 scenes use MapName Gaiden2/3);
+     random Gaiden3 fields (save2, save6) work. (c) Suspects, ranked: 1) one of the 5 shrunk big scenes (E1000 / M7408 / T4206 / U7000_1 / U7002_5, 64-65 KB, stored uncompressed;
+     M7408 = the PSP-only-opcode scene holding the final-chapter prologue text) -> engine script buffer/alloc fails (NULL write); 2) the 55 scenes using PSP-only opcodes (copied from
+     the Evo op table; 17 scenes recompile 3-28 bytes short = redundant jump op, never tested); 3) something else in the Gaiden maps (BuildStringList/other string changes by port_names/apply_misc).
+     NOTE old JP saves might also keep script state; save5 (made by the patched game) fails too, so that is NOT the only cause.
+23.3 NEW TOOLS: build_patch.py --exclude-file FILE (scene names listed in FILE stay ORIGINAL JP; spaces/commas/newlines). KIT 17 = kit 16 + BISECT_1/2/3.bat + ex_big5.txt / ex_ops55.txt /
+     ex_gaiden.txt (copies in tools/kit17_extra). BISECT_1 = all English except the 5 big scenes; BISECT_2 = except the 55 PSP-opcode scenes (+ big 5); BISECT_3 = except all Gaiden2/3 scenes.
+     User tests each ISO with save7 (black?) and chapter-7-end save -> Next Chapter (crash/loading?) and reports.
+23.4 NEXT (after user result): if BISECT_1 fixes -> shrink the 5 scenes much further (or leave them JP / split); if BISECT_2 fixes -> bisect the 55 by halves with --exclude-file; if BISECT_3
+     fixes -> bisect Gaiden maps by halves (name lists in ex_gaiden.txt). Then: JP leftovers (NG+ menu, item category tabs, party names -> look for them in t_status/t_name/EBOOT), t_fish, rest of
+     hand translation (ids 331-372, 381-538, 548-679), image menus / EBOOT (step 7).
+
+
+================================================================================
+24. HANDOFF #20 (chat #8, later)  <- NEWEST
+================================================================================
+24.1 USER RESULTS: BISECT_1/2/3 (kit17): same issues. TABLES_T1 (all tables, no scenes): saves RUN -> TABLES ARE FINE, the scenes cause it. SCENES_A (English scenes A0028..T0100) /
+     SCENES_B (T0120..U7004): save7 fails on A, works on B, but OTHER saves fail on B -> not one bad scene, a general scene problem. User is tired of blind testing (wants offline debugging).
+24.2 OFFLINE ANALYSIS (user uploaded scripts1.zip = 384 original .mc1; originals now in orig/psp/scripts_SN_orig/*._SN, decompiled copies were in /tmp only):
+     - Decompile(ours) vs Decompile(original), strings stripped: ALL 395 scenes have IDENTICAL instruction counts/logic except 15 scenes with 45 fewer scpstr tokens (colour/item tokens dropped on purpose).
+       => the script logic/code is not what differs. All 395 shipped scenes reopen in the decompiler with 0 errors.
+     - Plain recompile of ORIGINAL .py vs original ._SN: only 13+ differ (C4203 E1000 E1100 E1110 M4110-2 M5400 M7001 M7002 M7202 P7000 R2201 ...), by 3-28 bytes: the originals contain unreachable
+       dead jump ops (`01 03 xx xx` = Return + dead Jump) which the decompiler drops; all other diffs are shifted u16 offsets. Harmless (E1110 works in game).
+     - Original mc1 entries are packed TIGHT with no alignment/padding (same as ours) -> alignment is not the issue.
+     - Sizes: our .bin max 65334 vs orig max 63659; ours uncompressed-stored. Rebuilt mc1 were ~+2.7 MB (stored) over originals (18.5 MB total).
+24.3 LEADING HYPOTHESIS (crash = byte-copy loop writing via NULL pointer, empty minimap, infinite loading = allocation / memory failure on PSP's small heap): our STORED (uncompressed) .bin
+     makes every rebuilt .mc1 larger than the original and the engine probably loads the whole archive / sized buffers from it. FIX BUILT: falcom_lz._mode2_compress / psp_pack = real LZ77 mode-2
+     compressor (roundtrip verified on all 384 mc1; ratio ~0.5); mcpack.replace_entry now uses psp_pack. Rebuilt mc1 total = 18.78 MB vs original 18.53 MB (+1.3%), only 13 archives >10% bigger.
+24.4 KIT 20 = kit17 tools + compressed packing (UNTESTED). RUN_ME.bat = everything English (compressed). If it STILL fails the memory theory is wrong -> next ideas: (1) the engine may need
+     unpacked .bin <= original size (shrink English to original size in problem scenes / keep JP), (2) compare which scenes in SCENES_A fail for save7 by halving WITH the compressed packer,
+     (3) check mc1 other entries (.pre/.dtm) unchanged, (4) data.lst size field vs sector rounding.
+
+
+================================================================================
+25. HANDOFF #21 (chat #8, end)  <- NEWEST.  USER IS EXHAUSTED/DISHEARTENED by blind testing: NO MORE GUESS-KITS. Be honest, short, get real data first.
+================================================================================
+25.1 RESULTS: kit16 (all English) fails; BISECT_1/2/3 (kit17) same issues; TABLES_T1 (tables only, no scenes) RUNS FINE -> tables OK; SCENES_A (English scenes A0028..T0100): save7 BLACK;
+     SCENES_B (T0120..U7004): save7 ok but OTHER saves fail; kit20 (compressed mc1 packing) EXACT same issues -> "stored vs compressed / mc1 size" theory is WRONG. Also ruled out offline:
+     script logic (identical to originals in all 395 scenes, only 45 colour/item scpstr tokens dropped in 15 scenes), alignment (originals are tight too), long messages (Gaiden scenes have none >512 B).
+25.2 LOG FINDINGS (user posted PPSSPP log while stuck on black save7 screen; kit20 ISO): game is ALIVE (vblank, GE display lists, audio threads running) = a script/thread is waiting, no crash.
+     Engine opens files by RAW SECTOR: disc0:/sce_lbn<hex sector>_size0x<hex size> (sector+size straight from data.lst). The last reads before the stall were ORIGINAL untouched files:
+     lbn 0x61708 size 77757 = map4/m7309_zp.mcp and lbn 0xa8351 size 639227 = battle2/bm7301.bcm (original ISO ends at sector 810129 = 0xc5c91; our appended files are above that).
+     => file reads succeed; M7309 (Gaiden3, one of the 55 PSP-opcode scenes) is involved at the black screen -> suspect SCRIPT BEHAVIOUR of M73xx / final-chapter scenes, not file loading.
+25.3 HOW TO GET THE LOG (user did it): PPSSPP Settings -> Tools -> Developer tools -> Logging Channels (set all to Notice/Error, then FILESYS + SCEIO to Debug), then Debug -> Log Console.
+     Pitfalls: very noisy at Debug level (SCEKERNEL/SCEDISP/G3D/SCEGE spam) -> user must set only FILESYS/SCEIO. Full log shows every scene/chr/map file opened; read the order for the scene chain.
+25.4 NEXT STEPS (offline first!): (a) ask for the FILESYS/SCEIO-only log from loading save7 in kit20 AND the same save in the TABLES_T1 iso (works) -> diff the sequences of lbn/size reads, map
+     lbn->file via orig/psp/filelist.txt (columns PATH SIZE SECTOR) and data.lst: shows exactly which scene/resources the broken run never loads (or loads twice). (b) Check M7309 / M73xx / P7013 /
+     U7000 chain for scripts with PSP-only opcodes (Evo table copy: E8,E9,ED,F0-F3,F5,F8-FE) - semantics of those args may differ on PSP; unmodified-recompiled originals (/tmp/rc) differ only by dead jump bytes,
+     but our English text changes could shift something like OP args that are string/file refs. (c) Think about save-state: user's own save5 made in the patched game also goes black.
+     (d) Original scenes are in orig/psp/scripts_SN_orig/*._SN (from user's scripts1.zip). Tools: tools/kit17_extra has BISECT_*/TABLES_*/SCENES_* bat + exclude lists; build_patch.py --exclude-file.
+25.5 STATE: kit20 is the newest kit (kit17 tools + real compressor falcom_lz.psp_pack; all scenes English). Tables work, many scenes work (opening, E1110, save2/save6 areas), final-chapter start (幻影城・玄関)
+     and chapter-7 -> Next Chapter fail (black/infinite loading/NULL-write crash). Remaining JP leftovers + untranslated lines are in sections 21-22 (do NOT work on them until the black screen is solved).
+
+
+================================================================================
+26. HANDOFF #22 (chat #9)  <- NEWEST.  ROOT CAUSE FOUND OFFLINE (strong evidence, not yet tested in game)
+================================================================================
+26.1 FINDING: every scene archive (.mc1) holds, besides <scene>.bin, a <scene>.pre entry (PSP-only side file, 196-204 bytes in samples).
+     .pre contains CODE OFFSETS INTO THE UNPACKED .bin (u16 values, at least in 3 record types):
+        a0028.pre: 378 (op 0x49 Event idx 4), 397 (0x49 idx 5), 1594 (0x05 Call idx 3), 507 (op 0x1D)      [all are instruction starts]
+        c0301.pre: 275 (0x49 idx 2), 640/789/927/1113/1213 (5 x op 0x5B, in 8-byte records (u16 A, u16 off, u32 C)), 1422 (op 0x06 NewScene)
+     We rebuilt the .bin with longer/shorter inline text but copied .pre UNCHANGED => offsets after the first changed string are STALE.
+     PROOF (tools offline): shipped English A0028 (kit20): .pre offset 1594 now points into the middle of an instruction; correct new offset = 1515
+     (old->new mapping via decompiler instruction offsets, verified: all 4 sites in A0028/C0301 map onto the right opcode+idx).
+     Offsets before the first changed text stay valid -> scenes/saves that only talk to NPCs early on work; events/triggers/chapter transitions
+     that fire through stale .pre pointers jump into garbage -> black screen / endless loading / NULL write. This explains ALL earlier results
+     (bisects by scene subset never helped because the bug is in EVERY rebuilt scene; tables-only worked; compressed vs stored irrelevant;
+     opening E1110 works; 'random' saves work or not depending on which triggers they hit).
+26.2 TOOLS/DATA ADDED: tools/instoffs.py OUT.json FILES...  (run like decompile_all.sh: cd third_party/patched/Decompiler, PYTHONPATH=Decompiler:PyLibs-master:tools/stubs,
+     needs /tmp/fakegp) -> sorted instruction start offsets per scene.  out/inst_offsets.json = {scene: {"o": ORIGINAL PSP offsets, "n": offsets in kit20 English scene}}
+     for all 395 scenes (instruction counts identical in all 395, 0 errors; ~20k delta change points).  Mapping old->new: n[o.index(V)].
+26.3 OPEN: exact .pre FORMAT. Only 2 samples exist in kit1 (a0028, c0301). Rule 'any even-aligned u16 >= 0x78 that is an old instruction start' found exactly the true
+     pointers in both samples (0 false positives) but would be risky in big scenes (coordinates can coincide with instruction starts, ~15% density). PLAN: user re-uploads
+     scripts1.zip (384 original .mc1) -> decode .pre in all of them, derive the record layout, verify EVERY pointer lands on an instruction start, then:
+     (a) build_patch.py: for each scene also replace '<scene>.pre' (mcpack.replace_entry-style, psp_pack) with remapped pointers (needs inst_offsets.json shipped in kit; numbers only),
+     (b) KIT 21 = kit20 + remapped .pre.  Test: save7 (Phantom Castle entrance) + chapter-7-end -> Next Chapter.
+     Also check other per-scene side files for the same problem: .dtm (8 bytes ff..ff, harmless), and .mc2/.mc3/.mcl/.mce/.mcp (images/effects/voice; not tied to .bin).
+26.4 USER STATE: tired of blind kits. Do NOT ship a kit until the .pre decode is verified offline against all 384 files.
+
+
+================================================================================
+27. HANDOFF #23 (chat #9, later)  <- NEWEST.  .pre FORMAT DECODED + VERIFIED OFFLINE; REMAP BUILT; KIT 21 READY (first test of the real cause)
+================================================================================
+27.1 .pre FORMAT (verified: arrays tile the file EXACTLY in all 298 original .pre; 86 of 384 archives have no .pre = nothing to fix there):
+     hdr 5 x u32 = [0x14, n0, dir1, dir2, dir3]; n0 x u16 at 0x14 (group 0: NOT code pointers - 335 of 477 values lie below the first instruction - leave alone).
+     dir1..dir2, dir2..dir3, dir3..(zero slot): 16-byte slots (0,type,count,offset) -> arrays of 8-byte / 24-byte / 16-byte records.
+     Code pointer = u16 @+2 (8-byte recs), @+4 (24-byte recs), @+4 (16-byte recs).  Stats: in the 214 scenes without sub000.bin EVERY one of 12221 pointers is an
+     original instruction start (0 misses).  20501 pointers total; 15931 CHANGE after our text edits -> confirms stale-pointer theory (kit16-20 shipped them all stale).
+     Multi-script archives (u7000.mc1 = u7000,_1.._5 + sub000.bin; u7001, u7002, u7003, t4206 has sub000 only): slots are listed script by script (type resets = next
+     script); each array's pointers all hit instruction starts of exactly ONE script (8 single-record ambiguities resolved by non-decreasing order).
+     sub000.bin (4491 B, same in every archive) is untouched by us.
+27.2 TOOLS: tools/prefix.py ORIG_MC1_DIR out/inst_offsets.json OUT_DIR  -> OUT_DIR/<scene>.pre remapped (only u16 values change, size identical).  Output shipped: out/pre_new/*.pre (298).
+     RULE: out/inst_offsets.json 'n' = offsets of the kit20 scenes.  If scenes change (new translation), rerun tools/instoffs.py on the new scenes -> new json -> rerun prefix.py -> ship pre/.
+     build_patch.py: new --pre DIR (default ./pre): after replacing <scene>.bin also replaces <scene>.pre (log prints '.pre side-files remapped: N').
+27.3 OFFLINE VERIFICATION DONE: (a) a0028 .pre 1594 -> 1515 exactly as predicted; (b) in all 298-4 single-script archives: opcode at old target == opcode at new target in the
+     real kit20 English .bin, 0 mismatches; (c) 298 archives rebuilt (bin+pre replaced) -> every other entry byte-identical, readback OK.
+27.4 KIT 21 = out/test_kit21.zip (RUN_ME.bat = everything English + remapped .pre; bisect bats removed on purpose). User test: save7 (Phantom Castle), chapter-7-end -> Next Chapter, old saves.
+     If it works: next = remaining JP leftovers/untranslated lines (sections 21-22).  If not: (1) FILESYS/SCEIO log of save7 again; (2) check sub-scripts u7000_1..5/u7001_5/u7002_x/u7003_x:
+     build_patch does NOT replace them (only base.bin of base.mc1) -> still JP, so final-chapter dialogue is JP; to translate them mc1 must replace u7000_1.bin etc. AND remap their pointers
+     (prefix.remap_pre already supports replaced={...}).  (3) .dtm / g0 lists assumed harmless.
+27.5 USER STATE: tired of blind kits; this one is evidence-based. Keep replies SHORT.
+
+
+================================================================================
+28. HANDOFF #24 (chat #10)  <- NEWEST.  .pre VERIFIED OK; NEW THEORY = OLD SAVES STORE SCRIPT POSITIONS; NEXT = SAME-LENGTH DIAGNOSTIC ISO
+================================================================================
+28.0 USER STATE: exhausted/sad after many failed blind kits. Be warm, SHORT, honest, one step at a time. No more guess-kits: only evidence-based or clearly discriminating tests.
+28.1 FILES THE USER UPLOADED THIS CHAT: Trails3rd_handoff_21_partA/partB/21b_delta/23_delta (= this handoff chain), scripts1_1.zip (384 original .mc1), test_kit22.zip, and
+     the-legend-of-heroes-trails-in-the-sky-the-3rd_27713__1_.zip = a DOWNLOADED set of 14+ JP saves (folders ULJM053530001..14, ...0101; 2021 dates; the user's old test saves, not made on our ISO).
+28.2 test_kit22 = kit21 (remapped .pre) + RUN_ME_noM7400.bat (ex.txt = "m7400": that scene stays ORIGINAL JP). No result was reported for kit22 specifically; the user said:
+     "on the ORIGINAL iso it gets past the stuck point. On the TRANSLATED iso it randomly shows a SAVE / NEXT CHAPTER menu, and pressing NEXT CHAPTER freezes or loads forever."
+28.3 OFFLINE CHECKS DONE THIS CHAT (all negative = ruled out):
+     (a) kit22/pre/*.pre vs inst_offsets.json: ALL 2733 pointer slot-arrays (20501 ptrs) in 298 .pre land on instruction starts: main script -> NEW offsets, sub-scripts (u7000_1.._5 etc., not replaced) -> ORIGINAL offsets. => .pre remap is correct. Stale .pre is NOT the cause anymore.
+     (b) .eps (199 archives, mostly 308/232/156/80 B; effect placement: floats + 'mpfire4.eff' names) and .en2 (376 archives): u16 hit-rate vs instruction starts = 0.5% = noise => NOT code pointers.
+     (c) .pre group 0 (n0 x u16 @0x14): 15 hits / 157 candidates (~10%, = coincidence level) => NOT code pointers.
+     (d) M7400 original: bin 12567 -> shipped 13289 B; archive also has m7400.en2/.eps/.dtm/ed6se039.vag. M7309 (stuck scene in log) has .eps/.en2/.dtm/itp/eff entries. e1110 (works) has no .eps.
+28.4 SAVES ARE ENCRYPTED: SAVEDATA.DAT = 176692 B each, entropy 8.0 (PSP savedata encryption, key in encrypted EBOOT) -> cannot read script positions offline. PARAM.SFO is plain (PlayTime/Lv text).
+     User's "own new save" (save5, made via [Save] on the patched ISO at ch7 end) was created from an OLD save's session, so it likely carries old script state -> does NOT contradict the theory.
+28.5 CURRENT THEORY (UNPROVEN): the engine stores the running script's code offset (and/or call stack/return addresses into the .bin) inside the savegame. Our English .bin has different instruction offsets than the JP one
+     -> loading an old save resumes inside the wrong instruction -> garbage -> random Save/Next-Chapter menu, black screen, infinite loading, NULL-write crash. Fits: tables-only runs saves fine; prologue (fresh state) works;
+     bisecting by scene subset never helped; original ISO works. Other things like .pre are now ruled out.
+28.6 NEXT STEP (proposed to user, awaiting OK): build ONE DIAGNOSTIC ISO where every shipped scene is SAME-LENGTH/SAME-LAYOUT as the original: every string padded/trimmed to the original byte length of the JP string
+     (so every instruction offset, function offset and .pre pointer is identical to the original; text may look cut off - NOT for playing). Test: load the old saves (e.g. save7 Phantom Castle entrance, ch7-end -> Next Chapter).
+       loads  -> offset/position theory CONFIRMED -> build the real fix: keep original positions (see 28.7).
+       fails  -> positions are NOT the cause; drop theory; next = FILESYS/SCEIO log diff (25.3/25.4) of broken vs original ISO on the same save, or inspect other state (e.g. scene-id/ .dtm, data.lst, sector rounding).
+     I asked the user: which save + where the party stands when the wrong "Save / Next Chapter" menu appears (needed to choose test scene). Not answered yet.
+     Implementation hint: inline strings (scpstr) sit INSIDE the code stream, so length changes shift code. For the diagnostic, in the aligned .py replace each English string by (English trimmed/padded with spaces to len(JP bytes in the same encoding/escapes)),
+     recompile with compile_all.sh, check recompiled byte length == original ._SN length and instruction offsets == inst_offsets.json 'o' for ALL scenes, then build_patch with the ORIGINAL .pre (no remap needed).
+28.7 REAL-FIX IDEAS if confirmed: (1) fit English into the original byte budget per string (abbreviate/wrap; PSP JP SJIS is 2 B/char so many lines have budget ~2x chars of JP; long lines overflow); (2) move text out of the code stream (string table appended at the
+     END of the .bin, referenced by jump/offset - only if engine ops allow external string refs; research); (3) keep JP for scenes where English cannot fit and only translate with same-length padding; (4) tell the user old JP saves
+     may never be compatible with a longer-English build and that a NEW GAME on the patched ISO is the reliable path (test: new game, play past prologue, save, reload).
+28.8 CHEAP FALLBACK FOR THE USER: tables-only ISO (TABLES_T1 from kit17: build_patch.py --no-scenes) runs old saves fine and gives English items/magic/quests/books/shops/names. Package as the "stable" build if the user wants something playable now.
+28.9 STILL TODO (unchanged, do NOT start before the load problem is solved): leftover JP strings, hand translation ids 331-372/381-538/548-679, sub-scripts u7000_1.. (not replaced), t_fish, images/EBOOT text (step 7).
+
+
+================================================================================
+29. HANDOFF #25 (chat #11)  <- NEWEST.  SAVED-POSITION THEORY CHECKED OFFLINE; "SAME POSITIONS" BUILD = KIT 23 (first real test of the theory)
+================================================================================
+29.0 USER STATE: tired of blind kits. Short replies, one step at a time. User message this chat: "Last handoff we made a theory about the saves being the problem and not the translation.
+     Save6 opened, Save4 gave infinite loading, Save3 gave a menu that should NOT be there (on the OG ISO it plays a cutscene) and went infinite loading then blue screen on tn."
+     Files uploaded again: scripts1_1.zip, test_kit22.zip, handoff 21 partA/partB/21b/23/24 deltas. No ISO/saves in sandbox.
+29.1 OFFLINE EVIDENCE (new): M7309 = chapter-7-end scene (holds the "[Save] [Next Chapter]" Menu + ShowSaveMenu op 0x17 at orig offset 22918; English kit22 has it at 25507, +2589 bytes).
+     A JP save made there stores a script position ~22918. In the English scene that offset is MID-INSTRUCTION (English idx 1358 op 0x8C +1/+2/+4) = ~280 instructions earlier in the flow than the JP position
+     -> engine resumes in garbage / earlier code -> "Save/Next Chapter menu shown again", infinite loading, NULL write. Matches the user's Save3 report exactly. Field saves (no script running: save2/save6) have no
+     position to resume -> they load fine. So: strong circumstantial support for 28.5. (Saves are encrypted, so the stored value itself is still unread.)
+29.2 FIX BUILT = LAYOUT-KEEPING SCENES (tools/lk_build.py, verified by tools/lk_verify.py, out/test_kit23.zip):
+     * Start from the ORIGINAL JP .bin (header, function table, all offsets, all non-text instructions stay byte-identical at the same offsets => ORIGINAL .pre stays valid, NO remap, kit23 ships no pre/ dir).
+     * Only text instructions differ (ops 0x5B ChrTalk, 0x54 AnonymousTalk, 0x5C NpcTalk, 0x60 SetChrName, 0x5D Menu, 0xCC; none contain code offsets - verified).  Instruction i in JP == instruction i in English (same count/opcode in all 395).
+       Instructions differing ONLY in code-offset operands keep the original bytes (their targets are original offsets).
+       class A  English len == JP len: written in place (546)
+       class B  English+3 <= JP len: English in place + 'Jump next' (6270)
+       class C  English longer: slot = 'Jump R' (op 03 + u16 abs offset); R = English instr + 'Jump back' packed into dead bytes of other slots (best-fit) or appended after the function table (12748; 21 merged runs)
+       dead bytes = 0x00 (= ExitThread).
+     * Header: only StringTableOffset (u16 @90) changes -> English string table (everything from English StringTableOffset to EOF), appended LAST (the decompiler reads the string table to EOF).
+       Header diffs JP vs English in all 395 scenes are ONLY @90/91 (string table) and @96/97 (function table offset; we keep the JP one).  Tail layout [function table][string table] verified in all 395.
+     * Limit: offsets are u16 and the engine likely has a 64 KB script buffer -> total file <= 65535.  Scenes that cannot hold all English + original positions leave the longest lines JP:
+       E1000 (31 lines), M7408 (78), T4206 (107) = 216 lines (list in kit23/LEFT_JP_LINES.txt).  (U7000_1..5, U7002_5, U7003_5 also need drops but build_patch never ships them: they have no own .mc1.)
+       To finish those 3 scenes later: shrink their English (shrink_scene.py/shrink_iter.sh) or accept JP or ship the old shifted kit22 versions for them (+their remapped .pre) at the price of old saves inside those scenes.
+29.3 OFFLINE VERIFICATION DONE: (a) all 395 new scenes re-disassemble with 0 errors; (b) lk_verify: 228,868 unchanged/offset-only instrs identical to JP bytes, 546 A / 6,270 B / 12,748 C verified by reading the new file at the ORIGINAL offset
+     and following the trampolines to the exact English bytes (+ back-jump to the right next offset), 497 (now 534 incl. unshipped) deliberately left JP; 0 problems; (c) function tables identical to JP, string table = English, strtab offset <= 65535;
+     (d) all 384 shipped archives repack via mcpack.replace_entry and read back identical (avg +1.0 KB vs original mc1).
+29.4 KIT 23 = out/test_kit23.zip: RUN_ME.bat (passes --pre no_pre_folder so a stale pre/ from kit22 can never be used; log must say ".pre side-files remapped: 0"), scenes/ (395), WHAT_TO_CHECK.txt, LEFT_JP_LINES.txt.
+     USER TEST: load the SAME saves.  Expected if theory right: chapter-7-end save plays the cutscene like the original; Next Chapter works; save7 no black screen.
+     IF IT STILL FAILS: the position theory is wrong or incomplete -> (1) FILESYS/SCEIO log diff (25.3) on the same save: original ISO vs kit23; (2) other state in saves (flags/scene ids) can't be compared (encrypted);
+     (3) check how mc1 entries/other side files (.en2/.eps/.dtm) interact; (4) new-game test on kit23 to see if it is only old saves.
+     IF IT WORKS: old saves are fixed; next = shrink E1000/M7408/T4206, then the JP leftovers and untranslated lines (sections 21-22 / 28.9), sub-scripts (u7000_x...), images/EBOOT.
+29.5 TOOLS: tools/dumpins.py OUT.json FILES  (offset,size,opcode,#branch per instruction; same env as decompile_all.sh: cd third_party/patched/Decompiler; PYTHONPATH=Decompiler dir:PyLibs-master:tools/stubs; needs /tmp/fakegp; run WITHOUT python -I);
+     tools/lk_build.py ORIG_SN_DIR EN_SN_DIR out/dump_orig.json out/dump_en.json OUT_DIR REPORT;  tools/lk_verify.py ORIG EN NEW dump_orig dump_en dump_new.
+     RULE: if the English scenes change (new translation) -> recompile -> dumpins on them -> lk_build -> lk_verify -> new kit.  orig scenes = orig/psp/scripts_SN_orig/*._SN; English = test_kit22/scenes or newer compile.
+
+
+================================================================================
+30. HANDOFF #26 (chat #11, end)  <- NEWEST.  THEORY CONFIRMED: KIT 23 WORKS WITH OLD SAVES. ONE MERGED HANDOFF.
+================================================================================
+30.1 USER RESULT (kit23, "same positions" build, PPSSPP): old JP saves now LOAD with English text: chapter-6/7-end saves, final-chapter start (幻影城・玄関, 63:33), clear-data save, Kevin dialogue English,
+     orbment menu with English arts descriptions, and a save made on the patched ISO (Chapter 7 ~The Distant Flames~) loads.  The old black screen / infinite loading / NULL-write crash is GONE.
+     => ROOT CAUSE = savegames store script positions (offsets into the scene .bin); English text shifted code => wrong resume.  KEEP THE LAYOUT-KEEPING BUILD (tools/lk_build.py) FOR ALL FUTURE SCENE WORK.
+     One old save (user says) fails on BOTH the original JP ISO and the patched one -> that save is itself bad; ignore.
+     Remaining visible JP in screenshots: party-edit screen (パーティ編成 title, 'Party 1: 「右門 立ち塞がるは金の巨人」' = JP line in a scene/text), character names in orbment menu (リース, アネラス, リシャール, レン; ティア etc. arts names in Orbal Arts list),
+     names in dialogue name plate (ケビン) = SetChrName/ name tables not English there, chapter title banners (images), HUD labels.  (To investigate: t_name, t_magic names, scene SetChrName strings, EBOOT/images.)
+30.2 USER RULES: ONE merged handoff only (2 parts if >30 MB); each batch/session <= 3 minutes; short replies; Windows + PowerShell. User's paths: <user folder>\trails3rd (TrailsGOG\TrailsGOGFolder\ED6_DT22.dat inside).
+30.3 NEXT (in order, small batches): (1) shrink E1000/M7408/T4206 English so no lines stay JP (216 lines, kit23/LEFT_JP_LINES.txt); (2) JP leftovers: character names / art names / name plates; (3) untranslated lines (sections 21-22, 28.9);
+     (4) sub-scripts (u7000_x, u7002_5, u7003_5 not shipped: no own .mc1 -> must go into their parent archive; needs same layout-keeping + the parent's .pre untouched); (5) images/EBOOT text.
+     Always rebuild scenes with lk_build.py + lk_verify.py (section 29) and ship ONE new test kit.
+30.4 FILE MAP of this merged handoff: work/HANDOFF.txt (this), notes/INSTRUCTIONS.txt, tools/ (all scripts incl. lk_build/lk_verify/dumpins/instoffs/prefix/build_patch), out/kits/ (kit17,20,21,22,23 + RUN_ME_kit23_user_paths.bat),
+     out/dump_orig.json dump_en.json (instruction tables), orig/psp/scripts_SN_orig (JP scenes), orig/psp/scripts_mc1 (384 original .mc1) + orig/pc_gog* are in partB, queue/, done/, third_party/.
+
+
+================================================================================
+31. HANDOFF #27 (chat #12)  <- NEWEST.  EXTRA-SCRIPT MECHANISM: KIT 24 = 1-LINE TEST
+================================================================================
+31.1 PROBLEM: E1000/M7408/T4206 (+U7000_1, U7002_5...) cannot hold all English under the u16 64 KB limit (still ~2.8/3.7/4.3 KB over even after shrink) -> 216 lines JP + ~450 hand lines unshipped.
+31.2 IDEA: engine op 0x05 Call(slot,func) calls a function in an INCLUDED scene (header: 8 x u32 at 0x20, value 0x210000|DT21 dir index; 0xFFFFFFFF = none; SUB000 = 0x210001 in slot 6,
+     used by 90 scenes; the PSP finds it as an extra 'sub000.bin' entry inside the scene's OWN mc1).  Plan: move overflow text instructions into an extra script's functions
+     (instr + Return), slot in the big scene -> Call(slot,func)+Jump next (needs jplen >= 7).  Slots stay at original offsets, so saves stay valid.
+     UNKNOWN: slot numbering (U7000_1 lists U7000 in slot 0 while Call(0,..) elsewhere = self); whether ChrTalk/NpcTalk works inside a called function; whether a new name/ID can be used (test uses the known SUB000 name+ID).
+31.3 KIT 24 (/mnt/user-data/outputs/test_kit24.zip = kit23 + extra/e1110__sub000.bin + build_patch/mcpack add_entry): E1110 ins#503 (Host's first line) -> Call(6,27); SUB000 copy has function 27 = the English line prefixed "[EXT] ".
+     Verified offline: both files decompile with 0 errors, mc1 round-trip OK.  USER TEST: New Game -> first Host line shows "[EXT] *cough*..." ?
+31.4 IF WORKS: write tools/ext_build.py (per big scene: pick dropped lines w/ jplen>=7, put them in extra functions, header slot, add_entry; sub000 copy as carrier or new IDs later) -> E1000/M7408/T4206 fully English, then unshipped hand lines (U7000_x etc.).
+     IF NOT: try slot 1..5 with an unused DT21 name, or give up (keep JP lines).
+31.5 USER PATH UPDATE: GOG file = <user folder>\trails3rd\TrailsGOG\TrailsGOGFolder\ED6_DT22.dat  (kit24 RUN_ME.bat now has this absolute path; ISO fallback D:\...\trails3rd\Trails3rd.iso).
+     (Older notes saying ..\TrailsGOG... relative paths are superseded.)
+
+
+================================================================================
+32. HANDOFF #28 (chat #12, wrapped early at user's request: batch <= 8-9 min)  <- NEWEST
+================================================================================
+32.1 KIT 24 RESULT: WORKED. User screenshot: Host's first line shows "[EXT] *cough* If I may have your attention, please..." with correct name plate.
+     => Call(slot 6, func N) into an extra SUB000 copy added to the scene's own mc1 WORKS for ChrTalk.  (kit24 hijacked existing SUB000 function 27 (overwrote it) - for the real build APPEND functions instead:
+     SUB000 layout = [code][u16 function table @hdr96, size hdr98][strtab @hdr90]. New build: orig[:ftoo+fts] + new u16 entries + new function code (instr + Return 0x01) + strtab; fix hdr98 (size), hdr90 (strtab).
+     Slot in main scene = Call(05, slot u8=06, func u16) 4 bytes + Jump next (03 u16) 3 bytes => needs jplen >= 7 (all 216 dropped lines qualify: ops 0x5B/0x54/0x5C). Header slot 6 (offset 0x38) must be 0x210001 (T4206 already has it + own sub000 entry).
+     u7000.mc1 etc. already contain sub000.bin; E1000/M7408 need add_entry (mcpack.add_entry exists in kit24).
+32.2 FACTS FOUND THIS CHAT:
+     - Sub-scenes with NO own mc1 (never shipped so far, still JP): U7000_1..5 (in u7000.mc1), U7001_5 (u7001.mc1), U7002_4/5 (u7002.mc1), U7003_4/5 (u7003.mc1). build_patch must replace '<name>.bin' inside the parent archive (original .pre stays valid with layout-keeping).
+     - Queue is bigger than noted: en_*.tsv has ids 1-269, 373-380, 539-547, 680-855. UNTRANSLATED = 393 ids: E1000 103 (270-372, books/Hal), M7408 97, U7000_1 61, U7002_5 132 (ids 270-372, 381-538, 548-679).
+     - build/al regeneration (align_scripts -> port_names -> apply_hand -> apply_misc, ~10 s) reproduces out/hand_py exactly except the 5 shrunk big scenes (E1000 M7408 T4206 U7000_1 U7002_5), which are now FULL English (unshrunk).
+     - tools/jp_audit.py PY_DIR: remaining JP in full English = ChrTalk 885 (U7002_5 465, M7408 238, U7000_1 181 = untranslated hand ids), scpstr 585 (E1000 books 491, M7408 38), BuildStringList 166 (names lists; T0700 43, T3121 22, E0810 22, T3172/T2102 11 ...).
+     - Full-English big scenes CANNOT be compiled normally (u16 overflow). NEW tools/rec_compile.py + rec_all.sh record the bytes of every TEXT instruction (ops 5B,54,5C,60,5D,CC; also those nested in lambda bodies) + the English strtab straight from the assembler
+       -> JSON {'text':[[op,hex]...],'strtab':hex}.  Verified identical to the compiled kit22 scenes (C0301, C0302: 0 mismatches).  Pair i-th English text instr with the i-th text instr of out/dump_orig.json (op in text set).
+32.3 NEXT (in order):
+     1. rec_all.sh on build/al (all 395) -> lk_build2 (copy of lk_build using the recorded JSON instead of eb/dump_en; items = text instrs whose bytes differ) + ext: for scenes whose tail+strtab > 65535 move the largest class-C items into extra functions
+        (no JP dropping), write extra sub000 (append functions), set hdr slot 6, add/replace sub000 entry in the scene archive; also handle sub-scenes inside parent archives. Update lk_verify for ext (follow Call->function bytes).
+     2. Translate the 393 untranslated hand ids (queue/unique.tsv -> en_004.tsv ...), E1000 book texts (scpstr calls), BuildStringList names (166).
+     3. One kit 25, then JP leftovers (menu/party names), t_fish, images/EBOOT (user can dump decrypted EBOOT via PPSSPP).
+32.4 USER RULES: batch <= 8-9 min then wrap up and deliver whatever exists; short replies; one handoff.
+
+
+================================================================================
+33. HANDOFF #29 (chat #12, batch 2)  <- NEWEST.  KIT 25 BUILT (UNTESTED): EXT-SCRIPT OVERFLOW + EPILOGUE SUB-SCENES
+================================================================================
+33.1 NEW TOOLS (in delta zip): tools/lk_build2.py ORIG_SN REC_DIR out/dump_orig.json OUT  (layout-keeping v2: English from rec_compile JSON; overflow -> extra SUB000 functions via Call(6,fn)+Jump;
+     sub-scenes grouped per archive; OUT/extra/<archive>__sub000.bin), tools/lk_verify2.py ORIG REC NEW dump_orig dump_new (independent check), build_patch.py (archive-grouped, replaces/adds sub000.bin, ships U7000_x etc.), mcpack.py (add_entry).
+     Pipeline: align_scripts->port_names->apply_hand->apply_misc -> build/al ; rec_all.sh build/al build/rec ; lk_build2 ; dumpins on new scenes (2 halves) ; lk_verify2.
+33.2 RESULT: all 394 scenes (SUB000 excluded) fit with 0 lines left JP; 742 text instrs moved to ext (e1000 66, m7408 94, t4206 168, u7000 236, u7002 178 funcs). Verifier: 0 problems (same 2453, A 538, B 6227, C 12859, ext 742).
+     LIMIT=65000 for main script tail+strtab. Extra files disassemble (5 ok). Archive repack round-trips (e1000, m7408, t4206, u7000, u7002).
+33.3 KIT 25 = test_kit25.zip. WAITING FOR USER RESULT (see WHAT_TO_CHECK.txt). If a sub-scene (U7000_x) misbehaves: check slot 6 header = 0x210001 and that u7000.mc1 sub000.bin is the extended one.
+33.4 STILL TODO: translate 393 hand ids (E1000 103, M7408 97, U7000_1 61, U7002_5 132) + E1000 books (scpstr) + 166 name-list strings; then rebuild with the same pipeline (rec_all -> lk_build2 -> verify) -> kit 26.
+
+
+================================================================================
+34. HANDOFF #30 (chat #13)  <- NEWEST.  KIT 25 REAL RESULT SEEN; EBOOT STRINGS NOW PATCHABLE; KIT 26 BUILT (UNTESTED)
+================================================================================
+34.0 USER RULES (unchanged): short replies, one step at a time, Windows+PowerShell+Python, a session/batch must wrap up (handoff + test kit) before ~8-9 min,
+     ONE merged handoff only (2 parts if big), no blind guess-kits - say what evidence the kit is based on.  User paths: <user folder>\trails3rd
+     (Trails3rd.iso, TrailsGOG\TrailsGOGFolder\ED6_DT22.dat/.dir).  PPSSPP v1.20.4.
+34.1 FILES UPLOADED THIS CHAT: 6 screenshots (notes/screens_kit25/), ULJM05353_EBOOT.BIN = DECRYPTED EBOOT (ELF, 3,307,200 B = EXACTLY the size of PSP_GAME/SYSDIR/EBOOT.BIN in the ISO, LBA 405;
+     stored as orig/psp/ULJM05353_EBOOT_decrypted.BIN), the handoff-26 A/B zips, delta 29, test_kit25.zip, scripts1_1.zip (384 original .mc1), a saves zip (JP saves, see 28.1).
+34.2 KIT 25 RESULT (screenshots, user text): "Some scenes/dialogues are in English now but some character text boxes are JP, some English, even in the same scene; the prologue opening text before characters is
+     JP; many menus still JP."  Screens: (1,5,4) Kevin lines = English text but name plate 'ケビン' JP; (6) Estelle plate English; (3) 'Masked Woman' plate English; (2) opening ship shot with
+     centered caption 'ラインフォルト社製、新型飛行客船《ルシタニア号》——' JP.  => kit25 itself loads and plays (ext scripts OK in practice; user did not report black/crash).
+34.3 ANALYSIS (offline):
+     a) NAME PLATES 'ケビン'/'リース': 0 occurrences of ケビン/リース/レン/リシャール/ジョゼット/クローゼ/仮面の婦人 in the shipped kit25 scenes (only アネラス in T1131, シェラザード in T0700, ティータ in T3121/T3172),
+        BUT the decrypted EBOOT has hard-coded name strings: 'ケビン' @0x26202c, 'ケビン神父' @0x262034, 'リース' @0x262040, 'シスター・リース' @0x262048, 'エステル' @0x268458, 'カンパネルラ' @0x267dd0,
+        '仮面の紳士' @0x25bd08, ロイド/ノーチェ/フィッシャー @0x268574.. => the engine takes 3rd-only character plates (Kevin, Ries) from the EBOOT, not from scenes/t_name.  FIXED in kit 26 (EBOOT patch).
+     b) Menus/battle/shop/options/save/NG+/party-edit/location names are EBOOT strings (cp932, NUL-terminated, 4-byte aligned, rodata 0x258000-0x26c000): ~720 JP strings listed in notes/eboot_jp_strings.tsv
+        (offset, byte length, text).  No tail-sharing of strings (checked).  Strings contain real newline/tab bytes and printf codes (%d %s %c %%, colour codes #5C #2C #0C, icon #%dI) - keep them in the same order.
+     c) The intro caption over the ship (ラインフォルト社製、新型飛行客船《ルシタニア号》) is NOT in any of the 395 scenes' .bin, NOT in the EBOOT, NOT in kit1 text tables (ルシタニア only in E1100/E1110 NPC talk).
+        Likely: (i) burned into the opening PMF movie, or (ii) an .itp/.dtm/other data file or caption defined in a file type not yet scanned.  tools/find_jp_text.py ISO "TEXT" (kit26 FIND_CAPTION.bat) scans every
+        ISO file for SJIS/UTF-8/UTF-16 text -> run on user's PC and read the result.  If it is a movie: cannot patch text (could overlay by subtitle? PPSSPP only) -> leave JP / mention to user.
+     d) Remaining JP in the screenshots: item category tabs / party names in left panel (EBOOT strings), battle command wheel (攻撃 移動 アーツ クラフト 道具 退却: partly EBOOT text, partly icon images),
+        title-menu / chapter banners / HUD = .itp textures (step 7b, image editing).
+34.4 EBOOT PATCH (new, tools/eboot_patch.py + tools/eboot_dict.txt, 388 entries -> 410 string sites):
+     * Rule: a JP string is replaced IN PLACE by ASCII English <= its JP byte length (NUL padded), exact match after strip() -> every pointer/offset/relocation stays valid, file size unchanged (3,307,200).
+     * Dictionary format: 'JP => EN' one per line, '\n' / '\t' mean real newline/tab.  Run: python eboot_patch.py ULJM05353_EBOOT.BIN OUT.BIN [dict] --report  (prints TOO LONG / UNUSED).
+       Current result: 0 too long, 0 unused, 8401 bytes changed, only inside 0x258f18..0x26aef3.
+     * Delivery: build_patch.py --eboot FILE (kit26) overwrites SYSDIR/EBOOT.BIN in the ISO copy IN PLACE (same size, LBA 405) with the patched DECRYPTED ELF.  ASSUMPTION (untested): PPSSPP boots an ELF
+       EBOOT.BIN inside the ISO (normal for decrypted dumps).  The ISO copy only; original ISO untouched.  Real PSP would need the encrypted one - out of scope.
+     * Translated: difficulty text, NG+ carry-over menu, camp/party-edit/remote ability, battle (Attack/Retreat/Chain Craft/messages), item category help, shop+quartz synthesis+sepith exchange texts, quest status
+       words, bestiary, fishing/quiz UI, options + help lines, save/load/erase, cooking, equipment errors, location names (dungeon floors), party/bonus lines (Schera/Kloe/Kevin/Josette/Richard/Ries/Renne), names.
+     * NOT translated (not in dict, because ambiguous / needs context or are images): '《方石》' @0x259318, grade letters Ｇ＋..Ｂ＋, '空の軌跡 the 3rd　新規データ' @0x25a950, '幻影城' is shortened to 'Castle' (budget 8 B),
+       the skill descriptions @0x25a2a4/0x25a2ec ARE ported (straight/mid-circle attack text) but check. Some English is abbreviated because of byte budgets (e.g. Sepith names 'Earth Sep', 'Tier 1'); if text looks
+       cramped/ugly, relocating strings (append new longer strings + re-point) would need MIPS relocation edits - NOT done.
+     * To add more: look up offsets in notes/eboot_jp_strings.tsv (720 entries; many tail 'garbage' entries are binary noise - real ones have kana/kanji).  Check width in PPSSPP (menus use a fixed grid? unknown).
+34.5 KIT 26 = out/kits/test_kit26 (+ /mnt/user-data/outputs/test_kit26.zip): kit25 contents (395 English scenes, extra/ SUB000 overflow scripts, tables) + eboot_patch.py/eboot_dict.txt + build_patch.py --eboot
+     + RUN_ME.bat (looks for ULJM05353_EBOOT.BIN next to the bat or one folder up; builds WITHOUT it with a warning) + FIND_CAPTION.bat + WHAT_TO_CHECK.txt.  UNTESTED (kit25 result only partially reported).
+34.6 STILL TODO (priority): (1) user result of kit26: do Kevin/Ries plates, menus, battle text show English? does PPSSPP accept the patched ELF EBOOT? any overflow/cut-off in menus?
+     (2) find the ship-intro caption (FIND_CAPTION.bat).  (3) translate the 393 hand ids (E1000 103, M7408 97, U7000_1 61, U7002_5 132) + E1000 book texts (scpstr) + 166 BuildStringList names (tools/jp_audit.py);
+     rebuild via align_scripts -> port_names -> apply_hand -> apply_misc -> rec_all.sh -> lk_build2 -> dumpins -> lk_verify2 (section 33).  (4) t_fish, t_bmap/t_chrpos/t_kage/t_msas/t_world2.
+     (5) image text (.itp): menu tab titles, battle wheel, title screen, chapter banners (needs .itp decoder/encoder; textures live in data_3rd/etc, visual).  (6) the 'one old save fails on both ISOs' is a bad save: ignore.
+34.7 FILE MAP (merged): HANDOFF.txt (this); notes/ (INSTRUCTIONS.txt, eboot_jp_strings.tsv, screens_kit25/, psp_decompile_failures.txt); tools/ (all scripts incl. build_patch.py = kit26 version, eboot_patch.py,
+     eboot_dict.txt, find_jp_text.py, lk_build2/lk_verify2/rec_*/jp_audit, mcpack/falcom_lz/tbl*); out/kits/ (kit17,20,21,22,23,25,26); queue/ + done/ (hand translations en_*.tsv); third_party/patched (decompiler);
+     orig/psp (filelist, PARAM.SFO, ULJM05353_EBOOT_decrypted.BIN, kit1, scripts_SN_orig in PART A); PART B holds orig/pc_gog, orig/pc_gog_extracted, orig/psp/scripts_mc1 (384 original .mc1) and orig/psp/scripts_SN (decompiled JP .py + ._SN).
+     Sandbox rule reminders: bash has no `time`; run compile/decompile scripts with setsid nohup; build/al regenerates in ~10 s (section 32.2); decompile env: cd third_party/patched/Decompiler, PYTHONPATH=Decompiler:PyLibs-master:tools/stubs, /tmp/fakegp needed.
+     NOTE: build/ (al, rec) is NOT stored (regenerable); out/hand_py is the older shrunk set - regenerate with the section-33 pipeline.
+
+
+================================================================================
+35. HANDOFF #31 (chat #13, batch 2)  <- NEWEST.  KIT 26 RESULT + KIT 27 (DIAGNOSTIC)
+================================================================================
+35.0 USER RULE NOW: a batch/session must be <= 4-5 min, then deliver FULL merged handoff (+ kit if ready).  Screens of this round: notes/screens_kit25/Screenshot_2026-10-27_09*.png
+35.1 KIT 26 RESULT: build log OK (32 tables, 394 scenes, 5 extra scripts, 'EBOOT strings patched in place: 410').  PPSSPP BOOTS the patched decrypted EBOOT -> EBOOT in-place patching WORKS
+     (New Game+ carry-over screen now English: 'Mira/Sepith Carry', 'Items', 'Equip', 'Note', 'Status', 'OK', 'Carry over Mira and Sepith.').  Scenes/old saves still run.
+35.2 STILL JP (screenshots): (a) dialogue name plates 'ケビン' and 'アネラス' (face boxes) although EBOOT strings ケビン/リース were patched -> plate text does NOT come from those EBOOT strings.
+     Offline: shipped t_name has Kevin/Anelace in English (only 'ヨシュア' @5157 left JP in rebuilt t_name), shipped scenes contain no exact ケビン.  Source of these plates UNKNOWN (candidates: files in data_3rd not in kit1,
+     e.g. chr/ npc tables, battle2, system; or the plate is picked from a different table than t_name).  (b) BATTLE menu: crafts (チェイン３(４人協力), 風花陣...), arts (ティア, ティアラ, シルフェンガード...), their descriptions
+     (連携攻撃：大円・４人まで...), headers 移動/アーツ/Crafts(English image!) -> names JP although the orbment-menu uses ported t_magic (English).  Original t_magic holds 風花陣 (only there in kit1), so the battle menu reads
+     names from a source we did not patch (maybe another copy of the magic table inside battle files / .bcc / a file not in kit1).  Not in EBOOT either (風花陣/ティアラル absent from decrypted EBOOT; チェイン3 only partly).
+     (c) intro caption: FIND_CAPTION scanned all 12322 ISO files (SJIS/UTF-8/UTF-16): 0 hits -> it is inside a compressed archive entry, an image, or the movie.  Low priority.
+35.3 KIT 27 = out/kits/test_kit27 (+ outputs/test_kit27.zip) = kit26 + FIND_NAMES.bat (runs tools/find_jp_text.py for ケビン, 風花陣, ティアラル, アネラス over the whole ISO -> find_names_result.txt).  User sends result.
+     NEXT: read result; patch the right file(s) (same pipeline idea: replace file in ISO copy; for same-size text files patch in place).  Then t_name ヨシュア leftover (Joshua), hand lines (section 34.6).
+     If find shows nothing (all compressed): decompress archives offline (we have falcom_lz) - needs the files from the user's ISO (ask for specific ones via a tiny extract script, ONE at a time).
+
+
+================================================================================
+36. HANDOFF #32 (chat #13, batch 3)  <- NEWEST.  KIT 27 FIND RESULT WAS INVALID (BAT ENCODING BUG); NAME SOURCES NARROWED OFFLINE
+================================================================================
+36.0 USER RULE: batch <= 4-5 min; short replies; no blind kits.
+36.1 find_names_result.txt / find_caption_result.txt (all 0 hits over 12322 files) are NOT EVIDENCE: FIND_NAMES.bat / FIND_CAPTION.bat were UTF-8 .bat files with Japanese literals;
+     Windows cmd mangles them -> the searched bytes were garbage.  Also the scan may have been run on the PATCHED ISO (tables/EBOOT already English) - must use the ORIGINAL ISO.
+     NEVER pass Japanese on a .bat command line again; put it in a .py file (UTF-8) instead.  New: find_names.py (kit28 = tiny, scans ORIGINAL ISO for ケビン アネラス 風花陣 ティアラル チェイン ラインフォルト 攻撃 リース,
+     prints per-folder/extension hit counts to find_names_result.txt).  USER STEP: python find_names.py Trails3rd.iso  -> send find_names_result.txt.
+36.2 OFFLINE FACTS (kit1 plain files, no ISO needed):
+     - Plain PSP files containing ケビン/アネラス/ティア...: t_name, t_memo, t_quest, t_magic, t_ittxt(2), psele.txt, bgmtbl.txt and **battle/dat/dt*._dt (525 files, plain cp932)**.
+     - battle/dat/dt*._dt = per-enemy/boss battle data (struct + NUL strings: enemy name, craft/art names, descriptions with literal \n, boss lines e.g. '？ケビン？').  1056 distinct JP strings
+       (notes/battle_dat_jp_strings.tsv: count, byte length, text).  NOT PATCHED by any kit so far -> enemy names / enemy craft names show JP in battle.  Same-length in-place patch (like EBOOT, English <= JP bytes) is feasible.
+       PC equivalent unknown (maybe ED6_DT3x ms*/as* files in user's GOG folder) - ask only if wanted.
+     - Rebuilt t_name (tbl.rebuild PSP+PC) has Kevin @594, Anelace @634, Ries @842 ... all English (only last record ヨシュア @5157 JP) => the dialogue NAME PLATE 'ケビン' does NOT come from t_name idx 8/9 or from the patched EBOOT strings.
+       Original t_name has duplicates (リース @870 and @1202, エステル x9...); candidates still open: plate is drawn from a record/string we do not rewrite (check which t_name slot the engine uses), or from scene-embedded
+       data (0 ケビン in shipped scenes), or from a compressed file.  The battle-menu craft/art names (風花陣, ティアラル) exist in kit1 only inside t_magic (+ battle/dat for enemies); orbment menu shows them English, battle menu JP -> battle menu may use another copy.
+36.3 NEXT: (1) user runs find_names.py on ORIGINAL ISO -> read per-folder hits.  (2) if names sit in battle/*, system/*, chr/*: patch same-length in place (build_patch: write file bytes in place at its LBA like the EBOOT).
+     (3) write tools/battle_patch.py + dictionary from notes/battle_dat_jp_strings.tsv (translate in batches; English <= JP bytes, NUL padded; strings found by NUL split; verify count).
+     (4) then hand lines (34.6), t_name ヨシュア @5157, images/EBOOT (step 7).
+
+36.4 RESULT find_names.py (original ISO, valid): ケビン raw hits in text/*._dt(29) map4/*.mc1(9) battle2/*.bcc(8 files) battle/dat(7) monsnote/monsnote.dt2(7)+dt1(3) SYSDIR/*.bin(3) effect/eff(3) bgm(2) data_3rd/*.dat(1: joutyu.dat or start.dat) text/*.txt(1).
+     風花陣 only in t_magic (so battle-menu craft names must be read from t_magic OR a compressed copy). monsnote.dt1 (11 KB) + dt2 (232 KB) = bestiary text, plain.  start.dat (2.0 MB) / joutyu.dat (558 KB) unknown format, contain ケビン/攻撃.
+     NEXT: user runs extract_names_files.py -> names_files.zip (joutyu.dat start.dat monsnote.dt1/dt2 + battle2/*.bcc containing ケビン). Inspect: find the name-plate source, then same-length in-place patch via build_patch.
+
+================================================================================
+37. HANDOFF #33 (chat #13, batch 4)  <- NEWEST.  ROOT CAUSE OF JP NAME PLATES / BATTLE MENU: start.dat HOLDS A 2ND COPY OF THE TEXT TABLES. KIT 29 PATCHES IT (UNTESTED)
+================================================================================
+37.1 user's names_files.zip (orig/psp/names_files/): data_3rd/start.dat (2.07 MB), joutyu.dat (558 KB), monsnote.dt1/dt2, 8 battle2/*.bcc.  ALL are .mc-style archives
+     (u32 count x4, 32-byte entries name16/off/packed/unpacked/0; same as mc1) -> tools/mcpack.get_entry/replace_entry work on them unchanged.
+     start.dat (144 entries) = resident data: pspfont.dat, t_name t_magic t_quest t_town t_cook2 t_memo t_chain t_item t_item2 t_quartz t_status t_kage t_crfget t_magqrt t_sltget t_orb t_msas t_chrpos t_se
+     t_btset1/2.dt2, bgmtbl.txt, chrpt1.txt, *_pt.txt, minimap, dtpack.da2, systex.pkc, episo_s.bin, effects, vags.  (NO t_ittxt/t_ittxt2/t_title/t_shop/t_book there.)
+     VERIFIED: start.dat copies of t_name t_magic t_quest t_town t_cook2 t_memo t_chain t_item t_status are byte-identical to data_3rd/text/*._dt => our text/ patches never reached the engine's resident copy
+     => name plates (t_name) and battle menu (t_magic, t_chain) stayed JP.  EXPLAINS 35.2(a)(b).
+     joutyu.dat (44 entries) = compressed copy of monsnote.dt1/dt2 (bestiary), t_shop._dt, titleid.txt, dt24.txt + images/effects.  battle2/*.bcc contain .eff files with ケビン (cr04082c.eff etc. = craft effect names?) - not looked at.
+37.2 FIX (build_patch.py): after tables are rebuilt, start.dat entry '<table>._dt' is replaced with the same English table (mcpack.replace_entry, psp_pack), start.dat appended to the ISO copy, dir record + data.lst ('start','dat') updated.
+     --nostart disables.  Offline test: 7 tables replaced, 137 other entries read back identical, size 2,074,187 -> 2,074,987.  KIT 29 = test_kit29.zip (kit27 + new build_patch; FIND bats removed).
+     USER TEST: name plates, battle menu crafts/arts, no crash.
+37.3 NEXT: (1) kit29 result.  (2) add start.dat entries not yet ported: t_item/t_item2 (identical PC==PSP, no text), t_status, t_se, bgmtbl.txt (BGM titles?), chrpt1.txt, *_pt.txt (check for JP).  (3) joutyu.dat: t_shop copy + monsnote.dt1/dt2 (bestiary 232 KB text; same-length or rebuild).
+     (4) battle/dat/dt*._dt enemy data (525 plain files, 1056 JP strings, notes/battle_dat_jp_strings.tsv): hand translate + in-place patch.  (5) battle2 .eff names.  (6) hand lines / images / caption.
+
+================================================================================
+38. HANDOFF #34 (chat #13, batch 5)  <- NEWEST.  KIT 29 RESULT: start.dat FIX WORKS
+================================================================================
+38.0 USER RULES: session <= 3 min; ALWAYS attach handoff (A+B) + test kit + any scripts with present_files every time (user was annoyed when forgotten).
+38.1 KIT 29 RESULT (screens in notes/screens_kit29/): build log OK ('start.dat patched: 7 table copies replaced', 32 tables, 394 scenes, 5 extra scripts, EBOOT 410).
+     NOW ENGLISH: dialogue name plate 'Kevin'; party list names (Ries, Anelace, Richard, Renne); shop item names/descriptions; battle Crafts menu names (Chain 3, Smoke Cannon 2, Vital Cannon 3, Orbal Gear, Satellite Beam)
+     and their descriptions ('Combination Attack - Area (L) Up to four people charge forth...'); menu items 'Slot/Quartz/Cancel', 'Buy/Sell/Exch./Cancel', 'Accessory', 'Owned:', 'Mira', 'Select a character.'.
+     => confirmed: start.dat resident copy is what the engine reads for t_name/t_magic.  User: 'real progress'.
+38.2 STILL JP / TODO (from screenshots):
+     a) Crafts list row 'Cannon Impulse II - Craft - Area (中円・攻撃・独自の改造...' : the row text is English but the trailing description part is JP and overflows the box -> t_magic record for this S-craft (PSP-only?) kept JP part,
+        and some English rows are too long for the box (user says fine / fixable later: shorten).  JP string '中円・攻撃\n独自の改造を加え、火力が大幅にアップ。' is in t_magic AND EBOOT @0x25a2ec (dict entry may not match because of literal backslash-n / trailing spaces) -> check eboot_dict.txt handling + t_magic record.
+     b) Shop category tabs '武器 防具 道具' (Accessory is English): NOT in EBOOT with plain or ideographic-space spelling (searched 武器/武　器/防　具/道　具) -> probably images (.itp) or another table.  Same for slot-menu item '換 金' (換金 only inside sentences) and location banner '拠点・石碑' (not in EBOOT; maybe t_town/scene/ image).
+     c) Battle command wheel (攻撃 移動 アーツ クラフト 道具 退却) = IMAGE (itp) -> needs .itp edit (step 7b).
+     d) start.dat still holds JP copies of: t_status, t_kage, t_se, t_orb, t_msas, t_chrpos, t_item/t_item2/t_quartz (numeric), bgmtbl.txt, chrpt1.txt, *_pt.txt; joutyu.dat holds t_shop + monsnote.dt1/dt2 (bestiary 232 KB) -> next: ported t_shop into joutyu.dat, bestiary.
+     e) enemy names/crafts in battle/dat (525 plain files) still JP (notes/battle_dat_jp_strings.tsv) -> hand translate + in-place patch.
+     f) earlier TODO: hand lines (34.6), t_name ヨシュア @5157, caption, E1000 books etc.
+38.3 NEXT BATCH (3 min!): (1) fix 38.2a (search where 'Cannon Impulse' desc JP comes from; make t_magic/EBOOT dict match); (2) find 武器/防具/道具/換金/拠点・石碑 source (grep start.dat/joutyu entries incl. images list, t_status, t_se); (3) battle/dat enemy names patcher.
+
+================================================================================
+39. HANDOFF #35 (chat #13, batch 6, small)  <- NEWEST.  KIT 30 = 38.2a FIX (UNTESTED)
+================================================================================
+39.1 38.2a SOLVED: t_magic rec 260 (Cannon Impulse 2) is correctly English in our rebuilt table; the JP tail in the battle Crafts row comes from EBOOT hard-coded S-craft descriptions
+     @0x25a2a4 ('直線・攻撃\\n帝ラ社公式...') and @0x25a2ec ('中円・攻撃\\n独自の改造...') which were NOT in eboot_dict.txt (handoff 34.4 claim was wrong).  Added both (<=65 B each).
+     eboot_patch.py load_dict: these strings contain a LITERAL backslash+n (2 chars, not a newline) -> in eboot_dict.txt write TWO backslashes + n for a literal one; single backslash-n = real newline (as before).  Result: 412 strings patched, 0 unused, 0 too long.
+39.2 KIT 30 = test_kit30.zip (kit29 + new eboot_patch.py/eboot_dict.txt).  Expect Crafts list row for Cannon Impulse II fully English.
+39.3 STILL TODO: 38.2 b-f (shop tabs 武器 防具 道具, 換金, 拠点・石碑 source unknown; battle wheel image; start.dat/joutyu leftovers; battle/dat enemy names; hand lines).
+
+================================================================================
+40. HANDOFF #36 (chat #13, batch 7, small)  <- NEWEST.  KIT 31 (UNTESTED): joutyu.dat t_shop COPY
+================================================================================
+40.1 SEARCH RESULT (all decompressed entries of start.dat + joutyu.dat, kit1 loose files, original scenes): 拠点・石碑 (banner at top of shop/monolith screens) exists ONLY in t_shop._dt (loose text/ copy AND joutyu.dat copy, identical)
+     => engine reads the joutyu.dat copy.  武　器/防　具/道　具/換　金 (full-width-space spelling) occur NOWHERE in any plain/decompressed text -> shop tabs and '換 金' slot item are IMAGES (itp) or built from another encoding.  (武器 plain only inside t_town/t_quest/monsnote text.)
+     start.dat dtpack.da2 (320 KB) is a compressed pack (not parsed) - probably battle data; unknown.
+40.2 FIX: build_patch.py now loops over ('start','joutyu') archives and replaces every table copy it finds (joutyu: t_shop).  Offline test: joutyu t_shop == loose copy; replace + readback OK, other entries identical.  KIT 31 = test_kit31.zip.
+     (build_patch print bug fixed on the way: format string precedence.)
+40.3 NEXT: joutyu monsnote.dt1/dt2 (bestiary text 232 KB, plain cp932 after decompress; same in loose monsnote/ folder) -> translate? (big; no PC equivalent known); battle/dat enemy names (525 files); itp images for shop tabs/battle wheel (needs itp codec); dtpack.da2 unpack.
+
+================================================================================
+41. HANDOFF #37 (chat #14, batch 8)  <- NEWEST.  .ITP IMAGE FORMAT PARTLY CRACKED (tools/itp.py, tools/itpimg.py)
+================================================================================
+41.0 USER RULES: batch/session <= 8-9 min; ALWAYS present_files handoff A+B + kit + scripts. Kit31 result not reported yet.
+41.1 .ITP LAYOUT (PSP): u32 type, u32 w, u32 h.  type 0x3ea(1002): no extra field; 0x3ec/0x3ed/0x3ee: one extra u32 = palette entry count (8 / 256 / 254).
+     Then PALETTE block [u32 in][u32 out=count*4][u32 mode=2] + ed6 frames (RGBA bytes) and a tiny trailer chunk; then PIXEL block same framing
+     (0x3ed: a u32 equal to 'out' sits before the pixel block header -> try offset p and p+4; itpimg.load does).  Frames: MUST read until more_flag==0
+     (trailer chunk), otherwise the next block offset is wrong (fixed in itp.block).
+41.2 VERIFIED (viewed PNG): types 0x3ea and 0x3ec = 8bpp indexed, PSP-SWIZZLED (16 bytes x 8 rows blocks) -> itpimg.unswizzle(buf,w,h) -> correct
+     (ascii.itp font, ms00001.itp effect, cook00.itp frame all render right; notes/itp_png/_sheet_8bpp_ok.png).
+41.3 NOT SOLVED: types 0x3ed and 0x3ee (this includes c_camp0x menus, c_status, c_waku, c_note, c_title1, icons, sfont...).  Pixel block 'out' is NOT w*h (e.g. sfont 128x256 -> 16403,
+     c_camp01 256x256 -> 28191, icons 256x32 -> 4627, c_title1 512x256 -> 22763) so there is a 2nd codec layer (or odd 4bpp/tiling).  Plain 4bpp raw+swizzled both look like noise.
+     Also: 0x3ee and several 0x3ec files raise 'bad repeat' in the bzip decoder (c_load05/07/12/13/15, effadd1, tx0001, tx0075, effalp0, mokuji, c_cook_e) and several 0x3ec/0x3ed
+     (c_mouse, c_emotio, c_icon1, c_status, note, c_cook, c_camp03-05, c_note1, c_icon2, c_note01, c_back02) have the pixel block at a different offset (load() returns None) -> inspect hex.
+     IDEA: the decoded stream starts with 'cc dc de 5d ...' then long zero runs; try treating o as nibble-RLE/second LZ (Aureole-Suite/falcompress 'c77' module is the likely reference; network may allow GitHub).
+41.4 WHERE THE IMAGES ARE: start.dat (c_status, c_icon1, c_emotio, c_waku1/3, c_load00-15, c_title0.it3/c_title1.itp, t_icon01, c_noct, systex.pkc, dtpack.da2) and joutyu.dat
+     (c_camp01-05, c_note*, c_cook, mokuji, area, icons, effadd*, ms00001, tx*).  The battle command wheel is NOT among the decoded ones: probably in systex.pkc / dtpack.da2 (not unpacked) or battle/*.itp (21 files, user has not extracted them).
+     NEXT: (1) user sends data_3rd/battle/*.itp + etc/*.itp via extract script OR we unpack systex.pkc; (2) crack 0x3ed 2nd layer; (3) write encoder; (4) kit31 result.
+
+41.5 (chat #14, later in batch 8) USER SENT itp_files.zip (now in orig/psp/itp_files/: battle/*.itp 21, etc/*.itp, itp/, system/, minigame/, cooking/ ; made by tools/extract_itp.py).  Type counts: 0x3ec x120, 0x3ee x75, 0x3ed x40, 0x3ea x2.
+     0x3ee LAYOUT FOUND: [u32 0x3ee][u32 size = out+16][magic 'CCPI' (43 43 50 49)] [12 bytes 06 00 00 01 06 05 00 01 00 01 04 80 = unknown, probably tiny trailer/params] then ONE bzip block at offset 24 ([in][out][mode=2]+frames;
+       itp.block(d,24) decodes the whole file OK, e.g. bface005 -> 17840 B).  NO width/height field in header (so w/h must come from elsewhere or be derived).
+       Decoded: 4 bytes 00000000, then RGBA palette (256 x 4 = 1024 B, alpha ff mostly; skin tones visible), then 16812 B pixel stream that is NOT raw (has a 43-byte repeating pattern 00 90 90 6d 5a 00 8a ... ff ff 04 00 00 00 00) -> looks like
+       ANOTHER encoding (row-predicted / RLE).  Running mode1/mode2 on the stream fails (bad repeat).  My palette-length guess (256) may be wrong: first 78 entries clean alpha, after that odd alphas (0x9c, 0x50).
+     0x3ed: header [t][w][h][palcount] palette block, then u32 (=out) + pixel block; decoded stream length != w*h (see 41.3).  Probably same 2nd encoding as 0x3ee.  So 0x3ed+0x3ee (115 of 239 files) share an unsolved 2nd layer; 0x3ec (120 files, 8bpp swizzled) and 0x3ea are SOLVED.
+     NEXT: (1) decode ALL 120 0x3ec files to PNG in one pass and look for the battle wheel / menu tabs among them (itpimg.to_img; some have pixel block at other offset -> inspect).  (2) crack 2nd layer using a small 0x3ed (c_btn01 256x256, icons 256x32) and compare with the same art in a 0x3ec file if one exists.
+
+41.6 (chat #14, batch 9)  *** ALL 122 type-0x3ea/0x3ec .itp DECODE NOW *** (tools/itpimg.py fixed; PNGs in notes/itp_png_ec/, contact sheets cs0/cs1.png)
+     FIX: the PIXEL block header [in][out][mode] may sit at p or p+4 after the palette block and 'mode' is NOT always 2 (seen 2,4,6,10 = grows with image size) -> accept 2..32.  out == w*h exactly (8bpp, PSP-swizzled 16x8-byte blocks).
+     CONTENT FOUND: etc/c_icon1.itp (256x256) = JP UI sprite sheet incl. tab buttons: row1 武器 防具 道具 ケース イベント 素材 (shop/camp category tabs), row 回復 釣り 道具 バトル (+ greyed copies), 'ALL' bars,
+       digits 0-9.  etc/c_icon2.itp icons.  c_status = HP/EP/CP bars + portraits.  c_camp04/05, c_pasele = chibi sprites.  c_stch* = portrait + name plates (already English names).  minigame m00-m05 = already English casino art.
+     NOT FOUND: battle command wheel (攻撃 移動 アーツ クラフト 道具 退却).  Not in any 0x3ec file.  It is therefore in a 0x3ed/0x3ee file (etc/c_btn01/c_btn02/c_camp0x/c_load.. are 0x3ed) or in start.dat systex.pkc / dtpack.da2 / battle2 .bcc.
+       Candidates to decode first: etc/c_btn01.itp, c_btn02.itp, c_camp01-03 (0x3ed).  Unsolved: 0x3ed (40 files) + 0x3ee (75: bface*, c_kao*, c_ka199x, c_load05/07/12/13/15, c_cook_e, c_stch32, disc_chg).
+     NEXT: (1) crack 0x3ed 2nd layer (see 41.3; test on c_btn01).  (2) ENCODER for 0x3ec: edit PNG indices with the SAME palette -> swizzle -> bzip (falcom_lz.psp_pack) -> rebuild header; entries with unpacked_size 0 in start.dat/joutyu.dat must be stored RAW
+       (mcpack.replace_entry would set unpacked!=0: add a raw-replace variant).  Patch BOTH loose etc/c_icon1.itp (data.lst) and start.dat/joutyu.dat copies.  (3) translate tab labels (武器=Weapon/防具=Armor/道具=Items/ケース=Case/イベント=Event/素材=Material/回復=Heal/釣り=Fish/バトル=Battle).
+
+41.7 (chat #14, batch 10, short) 0x3ed/0x3ee ANALYSIS - NEGATIVE RESULTS (don't repeat):
+     * 0x3ed pixel stream is NOT 4bpp, NOT plain 8bpp-with-zero-trim, NOT running-sum (delta) 8bpp, with or without PSP swizzle (rendered c_btn01 4 ways: noise in the first ~25% of rows, flat after).  Fraction of non-zero bytes ~97% in the used part => still ENCODED.
+     * 0x3ed PALETTE block decodes to junk too (c_btn01: 1b 18 15 00 | 6a 69 6a 01 | a0 00 fb fd | ff 00 f8 01 | 07 13 0d 05 ...), contains frequent 00 / ff followed by small numbers => looks like an escape/RLE or bit-packed 2nd layer applied to palette AND pixels.
+       (0x3ec/0x3ea palettes are clean RGBA; 0x3ee palette is clean RGBA after a 4-byte 00000000 prefix, only its pixel stream is encoded: 00 90 90 6d 5a 00 8a 00 64 6d 00 f6 00 00 ff ff 00 ff d4 01 ..., 43-byte repeating rows.)
+     * IDEA NOT YET TRIED: the first-layer decoder may be wrong for these blocks: 'mode' field (2) may not mean the same thing; try decoding the frames with mode1 even when chunk[0]==0, or treat chunk[0] as a flag byte; also try mode=2 frames where header 'in' counts differently.  Best reference: Aureole-Suite/falcompress (src/c77.rs?) -> try pip/GitHub if network allowed, else ask user to enable network in the chat.
+     * Since 0x3ee files have magic 'CCPI' at offset 8 and 3ec files have none, the 'CCPI' family (and maybe 0x3ed) is a different compressor ('C77' ?).  Palette of 0x3ee is intact, so the pixel stream is probably a per-row predicted/RLE stream: rows seem to be 43 bytes long in bface005 (period test).
+     PRIORITY NEXT BATCH (suggested): do NOT burn time on 0x3ed/0x3ee blind.  Instead (a) build the 0x3ec ENCODER and translate c_icon1 tabs (武器 防具 道具 ケース イベント 素材 回復 釣り バトル) = a visible win, (b) ask the user to run PPSSPP texture dump (Settings > Tools > Developer tools > 'Save new textures', folder TEXTURES/ULJM05353/new) while on the battle screen: gives PNGs of the battle wheel directly, so we can locate it in the files by pixel match.
+
+================================================================================
+42. HANDOFF #38 (chat #15, batch 11, short)  <- NEWEST.  0x3ec ENCODER WORKS; c_icon1 TAB LABELS TRANSLATED (NOT YET IN ISO)
+================================================================================
+42.1 NEW tools/icon1_tabs.py SRC.itp DST.itp: edits 8bpp PSP-swizzled .itp (types 0x3ea/0x3ec), same palette, re-swizzles, re-packs pixel block with falcom_lz.psp_pack
+     (rebuild() keeps header+palette bytes; pixel block header [in][out][mode=2]); round trip verified (decode(new) == edited indices).  3x5 pixel font inside (dict F).
+     Result out/itp_edit/c_icon1_EN.itp (+ _preview.png): tabs ARMS ARMOR ITEMS CASE EVENT FOOD BOOKS FISH (orange row y97 + blue row y113) and bottom buttons HEAL FISH ITEMS BATTLE (y193/209/225/241).
+42.2 KNOWN COSMETIC BUG: bg colour detection picks the wrong shade on some tabs (ARMS/ARMOR/ITEMS/BOOKS dark bg + light text, others light bg + dark text). Fix: take bg/fg from tab 3 (CASE) of the same row for all tabs.
+42.3 NOT DONE: putting it into the ISO.  c_icon1.itp is loose in data_3rd/etc (data.lst entry, replace like other files in build_patch.py) AND maybe inside start.dat (check; replacing an entry with unpacked_size 0 needs a RAW replace, 41.6).
+     Text of tabs 'ケース/イベント' and 5th-8th tab meaning: user should confirm in game (shop/camp category: 食材=Food/Ingredients, 書物=Books).
+42.4 NEXT: (1) fix 42.2; (2) integrate c_icon1 into build_patch.py (+ start.dat/joutyu copy) -> kit32; (3) user result of kit31; (4) PPSSPP texture dump of the battle wheel (41.7); (5) hand lines, battle/dat names, bestiary.
+
+================================================================================
+43. HANDOFF #41 (chat #15, batch 12)  <- NEWEST.  EASY WAY FOUND: PPSSPP TEXTURE REPLACEMENT (no codec needed)
+================================================================================
+43.1 kit31 RESULT (user): boots fine. Still JP: shop/monolith banner 拠点・石碑 (also garbled 'Q・・ウ・イ' once, and cut '碑'), shop tabs 武器 防具 道具 食材 (images), 換金, door prompt '扉を開きますか' (scene text elsewhere), Accessory is English.
+     => banner is probably NOT t_shop text (maybe image/other table): check dump textures.
+43.2 USER SENT new.zip = PPSSPP texture dump (orig/psp/texdump_new.zip (unzip to a folder), 129 PNG, named by PPSSPP hash).  Tex 041cc5006f4134f1f0d67116.png (256x256) = battle command wheel buttons.
+     NONE of the dumped textures match decoded 0x3ea/0x3ec .itp => they come from unsolved 0x3ed/0x3ee files (or start.dat packs).
+43.3 EASY ROUTE: PPSSPP "Replace textures": put edited PNG with the SAME hash filename into memstick/PSP/TEXTURES/ULJM05353/ (parent of 'new'), enable Settings>Tools>Developer tools>Replace textures. No ISO/codec work; covers every image. Emulator only.
+     DONE: out/texrep/wheel.py -> 041cc5...png with ATTACK MOVE ARTS CRAFT ITEM RETREAT (user pack texture_pack_battle_wheel.zip).  UNTESTED in game.
+43.4 NEXT: go through the other dump PNGs (contact sheets: view all 104 small ones + 512x512 screen grabs), find JP text textures (shop tabs, banner, 換金, title, chapter banners, menu headers), edit each with the same method (fill + 3x5/DejaVu text), ship one pack.  The earlier c_icon1 .itp encoder (section 42) is now optional.
+
+
+================================================================================
+43. HANDOFF #41 (chat #16)  <- NEWEST.  TEXTURE REPLACEMENT WORKS; HAND LINES RESUMED
+================================================================================
+43.1 TEXTURE PACK WORKS (user confirmed with screenshot: battle wheel now ATTACK/MOVE/ARTS/CRAFT/ITEM/RETREAT in PPSSPP 1.20.4).
+     Fix for 'textures.ini hash not specified': [options] needs  hash = quick  (+ ignoreAddress = true). Final ini = out/texrep/pack_v3/TEXTURES/ULJM05353/textures.ini
+     (CRLF; [hashes] 041cc5006f4134f1f0d67116 = wheel_en.png and 000000006f4134f1f0d67116 = wheel_en.png; also ships hash-named PNG as fallback).
+     Install: memstick\PSP\TEXTURES\ULJM05353\ ; Settings>Tools>Developer tools>Replace textures ON. Filename = <8 hex addr><8 hex texhash><8 hex clut hash>.
+     DUMP: orig/psp/texdump_new.zip (129 PNG). 256x256: 0419c5.. 041ac5.. 041bc5.. 041cc5(wheel buttons, DONE) 041dc5(big ring art 'RemoteAbility' etc) + 5 portrait sheets 08e36f.. 08e473.. 08e578.. 08e67c..
+     TEXTURE TODO (LAST STEP): dump JP-text textures (shop tabs 武器 防具 道具 食材, 換金, banner 拠点・石碑, title, chapter banners, menu headers), edit with same method (out/texrep/wheel.py), ship one pack.
+43.2 .ITP 0x3ee (CCPI) PROGRESS (details notes/ITP_CCPI_findings_handoff41.txt) - OPTIONAL now (texture route makes it unnecessary):
+     ground-truth pairs bface009<->08e473c0.., bface011<->08e57800.., bface015<->08e67c40.., bface206<->08e36f80..;  header decoded (u16 A,B,C dims, flag byte);
+     palette = 4-byte pad + 256 RGBA (real alpha, idx255 transparent); pixel value = palette_index+1 (0=transparent); stream is a spatial 2-px-wide-strip scan + unknown 2nd layer. NOT solved.
+43.3 NON-TEXTURE TRANSLATION (this chat):
+     a) 66 AnonymousTalk strings (calls with scpstr tokens that apply_hand skips) translated: queue/anon_en.tsv (JP<TAB>EN exact-literal). Applied IN PLACE to out/hand_py/*.py (41 scenes; files are CP932, not UTF-8!).
+        Includes door prompt '"扉"を開きますか？' -> 'Open the door?' (28x, M3110 etc), save warnings, M7408/7002_5/7000_1 epilogue + notebook text. Keep \x01 (newline) \x02 (wait) \x03 (page) and #nnnF/#nW codes.
+        If out/hand_py is regenerated from align_scripts etc., RE-APPLY anon_en.tsv (simple regex over "..." literals, exact match; script was inline - 10 lines).
+     b) queue/en_004.tsv = hand ids 270-339 (E1000 books/reports) translated. apply_hand applies all en_*.tsv. NOT yet applied to hand_py / not recompiled / not in an ISO.
+        Translated ids now: 1-339 (+373-380, 539-547, 680-855). UNTRANSLATED: 340-372, 381-538, 548-679 (~320 ids; list with: ids in queue/unique.tsv not in en_001..004).
+        Glossary used: septium, Bracer Guild, Orbal, Epstein Foundation, Salt Pillar, Sealing Ministry, Jester Jaeger Corps, Hundred Days War, Phantom Thief B, Grail Notebook, Phantasma, Capua Express Delivery.
+43.4 STILL JP (non-texture): E1000 book AnonymousTalk (145 calls, ~600 strings: these are the same book texts as the hand ids in part?) ; 320 hand ids; battle/dat enemy names (1056 strings, notes/battle_dat_jp_strings.tsv, in-place same-length patch);
+     bestiary monsnote.dt1/dt2 (+joutyu.dat copy); t_name ヨシュア @5157; start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1 *_pt); 換金 / shop tabs = images (texture step).
+43.5 NEXT: (1) translate remaining hand ids -> en_005.tsv ...; (2) re-run pipeline: align_scripts -> port_names -> apply_hand -> apply_misc -> (re-apply anon_en) -> rec_all.sh -> lk_build2 -> dumpins -> lk_verify2 -> build_patch (kit);
+     (3) battle/dat enemy names patcher; (4) bestiary; (5) leftovers; (6) ONE test kit for the user; (7) textures LAST via PPSSPP packs.
+
+
+================================================================================
+44. HANDOFF #50 (chat #17, short)  <- NEWEST.  RUN_ME.bat FIXED (kit32)
+================================================================================
+44.1 USER: kit32 RUN_ME.bat closed immediately. CAUSE: '(EBOOT)' inside an if/else ( ) block closed the block early => cmd syntax error, no pause; plus LF-only line endings.
+     FIX: new RUN_ME.bat = CRLF, goto-labels (no parenthesised if/else blocks, no ')' in echo), python/py -3 fallback, always pauses. Copied to out/kits/test_kit32 and the shipped test_kit32.zip.
+     RULE FOR ALL FUTURE .bat: CRLF endings, no ( ) blocks containing ')' in text, always end with pause.
+44.2 STATUS: ALL 855 hand ids translated (queue/en_001..005) and in kit32 with anon_en (66), battle/dat names (323+bestiary monsnote.dt2 = 325 files), eboot dict.
+     STILL OPEN (non-texture): verify user result of kit32 (WHAT_TO_CHECK.txt); t_name Yoshua@5157; start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1 *_pt); E1000 book AnonymousTalk leftovers if any (run tools/jp_audit.py).
+     TEXTURES LAST (PPSSPP pack; wheel v3 works).
+
+
+================================================================================
+45. HANDOFF #51 (chat #17, batch 2)  <- NEWEST.  MORE JP FIXED (kit34)
+================================================================================
+45.1 USER screenshots still JP: Arts-menu header アーツ, Party Edit caption 【リース】伸縮自在の法剣で…, craft banner ゴルゴンアロー.
+     CHECKED OFFLINE: psele.txt in kit32/battle IS English (Ries line included); ゴルゴンアロー is English in all 5 battle/dat files holding it (dt300402/431/499/4a4/576). So those two screenshots are most likely from an OLD ISO
+     (RUN_ME.bat was broken, so kit32 may never have been built). NEED FROM USER: last lines of the build log (must show 'battle/dat files patched in place: 325' and 'EBOOT strings patched').
+45.2 FIXED NOW: EBOOT battle-menu labels '   アーツ   ' '   道  具   ' '   移  動   ' (eboot_dict.txt: Arts/Items/Move; EBOOT only applied if the user's decrypted ULJM05353_EBOOT.BIN sits next to RUN_ME.bat or one folder up).
+     table_en.tsv +55: t_chain 4 shouts, t_memo 5 labels, t_shop 3 (影の石碑 拠点・大樹 拠点・石碑), t_town 43 shop/inn names (《》 stripped). Offline rebuild + tbl_verify bad=0 for t_town t_chain t_memo t_quest t_name t_magic t_ittxt; eboot patch 416 strings, same length.
+45.3 STILL JP (non-texture): t_book01 (96 lines) + t_book02 (62 lines) = PSP-only newspaper articles (only 4 headlines done; body text JP, fixed-width wrapped with U+3000 indent) -> NEXT: hand-translate (see orig/psp/kit1/data_3rd/text/t_book01._dt);
+     t_name Yoshua@5157; start.dat leftovers (t_status t_se t_kage t_orb t_msas t_chrpos bgmtbl chrpt1 *_pt); battle/dat: ~30 files still hold JP shouts/skill names (list: dt30002d 2e 3f 50 51 52 d2 f4 199 1cf 28a 2f1 3b9 3bb 3c5 3fa 40d 412 45f 491 49a 4a2 4ff) + 29 orig files with JP not shipped; textures LAST.
+
+
+================================================================================
+46. HANDOFF #52 (chat #17, batch 3)  <- NEWEST.  KIT 35: BESTIARY + SUN DOOR LAYOUT
+================================================================================
+46.1 USER SCREENSHOTS (kit32-class build): (a) bestiary list + detail still JP (names, description) although Found at/Elements English; (b) Sun Door 1 page: riddle text overlapped label/[Answer] column, Info text clipped at screen edge, Episode empty ('..').
+46.2 CAUSE (a): the game reads monsnote.dt1/dt2 from the resident copy INSIDE data_3rd/joutyu.dat (identical to the loose files); build_patch only patched the loose file. FIX: build_patch joutyu step now also replace_entry()s monsnote.dt1/dt2 from the --battle dir (dt2 only exists there; verified get_entry == patched).
+46.3 CAUSE (b): t_quest door records (PSP 17 strings, idx7 contains 扉; PC 18 strings): PC wrap is ~35 chars, PSP boxes ~30 (left col) / ~33 (right col, screen edge); PSP riddle needs a leading blank line ('　\x01...'); episode slot mapped to PC ' '.
+     FIX in tools/tbl.py _fix_door(): episode from PC strings[2]; riddle re-wrapped 30 cols + leading blank + indent; info re-wrapped 30-33 cols (<=3 lines if possible); bonus wrapped 30. tbl_verify skips door records.  Offline: t_quest verify bad=0, all tables total bad=0.
+     KNOWN: 35 door records; Moon/Star/Sun5 riddles still 7-10 lines (PSP JP has ~5-6) -> may overflow downward; ask user for a screenshot of a Star door / Sun 5 and shrink if needed.
+46.4 STILL JP: see 45.3. Next: user's screenshots of kit35 (bestiary, Sun/Star doors).
